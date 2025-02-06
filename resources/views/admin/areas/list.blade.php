@@ -13,9 +13,9 @@
                     <button type="button" class="btn addBtn" >+</button>
                     <button type="button" class="btn removeBtn" >x</button>
                     Add Area <span class="count">{{ $totalArea }}</span>
-                    {{-- <form action="" method="post" id="addAreaForm" name="addAreaForm"> --}}
-                    <form action="areas" method="post" class="form">
-                        @csrf
+                    <form action="" method="post" id="addAreaForm" name="addAreaForm">
+                    {{-- <form action="areas" method="post" class="form">
+                        @csrf --}}
                         <div class="form-adding">
                             <input type="text" name="area_name" id="area_name" class="form-control" placeholder="Name">
                             <input type="hidden" name="area_slug" id="area_slug" class="form-control" placeholder="Name">
@@ -35,7 +35,7 @@
 
 <section>
     <div class="container-fluid">
-        @include('admin.message')
+        @include('admin.layouts.message')
 
         <div class="modal fade drawer right-align" id="addTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -47,9 +47,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                    {{-- <form action="" method="post" name="addingTableForm" id="addingTableForm"> --}}
-                        <form action="seatings" method="post">
-                            @csrf
+                    <form action="" method="post" name="addingTableForm" id="addingTableForm">
+                        {{-- <form action="seatings" method="post">
+                            @csrf --}}
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -157,7 +157,7 @@
                                                     <div class="invisible-checkboxes">
                                                         <input {{ ($value->status == 'running') ? 'checked' : '' }} type="checkbox" id="custom_{{ $value->area_id }}_{{ $value->table_slug }}"  value="{{ $value->table_name }}" />
                                                         <label class="checkbox-alias" for="custom_{{ $value->area_id }}_{{ $value->table_slug }}">{{ $value->table_name }} <p class="small-text">Seats: {{ $value->seating_capacity }}</p></label>
-                                                        {{-- {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area->area_name.'/'.$value->table_slug, 'QRCODE',6.5,6.5) !!} --}}
+                                                        {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area->area_name.'/'.$value->table_slug, 'QRCODE',6.5,6.5) !!}
 
                                                         <div class="countSeat">
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#showQR_branch_{{ $value->table_slug }}">QR</a>
@@ -176,7 +176,7 @@
                                                                 <div class="modal-body">
                                                                     <h2>{{ $value->table_name }}</h2>
                                                                     <h2>{{ $value->area_name }}</h2>
-                                                                    {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->table_slug, 'QRCODE',6.5,6.5) !!}
+                                                                    {{-- {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->table_slug, 'QRCODE',6.5,6.5) !!} --}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -269,8 +269,7 @@ $('#area_name').change(function(){
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('tables.index') }}"
-
+                    window.location.href="{{ route('areas.index') }}"
                     $('#name').removeClass('is-invalid')
                     .siblings('p')
                     .removeClass('invalid-feedback').html("");

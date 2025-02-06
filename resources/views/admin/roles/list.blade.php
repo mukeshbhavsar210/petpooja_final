@@ -6,11 +6,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h1>Roles</h1>
+                <h1>Roles  <span class="count">{{ $totalRoles }}</span></h1>
             </div>
             <div class="col-sm-6 text-right">
                 @can('create roles')
-                    <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>
+                    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createRole">Create Role</button>
                 @endcan                
             </div>
         </div>
@@ -19,6 +19,69 @@
 
 <div class="container-fluid">
     @include('admin.layouts.message')
+
+    <div class="modal fade drawer right-align" id="createRole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Menu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="{{ route('roles.store') }}" method="post">
+                    @csrf
+                    <div class="modal-body">  
+                        <div class="form-group">
+                            <label for="name">Role Name</label>
+                            <input value="{{ old('name') }}" name="name" placeholder="Role name" type="text" class="form-control"/>
+                            @error('name')
+                                <p class="text-red-400 font-small">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="row">
+                            @if($permissions->isNotEmpty())
+                                @foreach ($permissions as $value)
+                                    <div class="col-md-6">
+                                        <input type="checkbox" id="permission_{{ $value->id }}" class="rounded" name="permission[]" value="{{ $value->name }}" />
+                                        <label for="permission_{{ $value->id }}">{{ $value->name }}</label>
+                                    </div>        
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <a data-toggle="modal" data-target="#editRole" class="btn btn-primary user_dialog" data-id="ddd">Edit</a>
+
+    <div class="modal fade drawer right-align" id="editRole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Menu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="{{ route('roles.update',$roles->id) }}" method="post">
+                    @csrf
+                    
+                    </form> 
+                </div>      
+            </div>
+        </div>
+    </div>
 
     <div id="accordion" class="accordion">
         <div class="card mb-0">
@@ -85,5 +148,12 @@
                 });
             }
         }
+
+        $(document).on("click", ".user_dialog", function () {
+            alert("H");
+            var UserName = $(this).data('id');
+            $(".modal-body #user_name").val( UserName );
+        });
+
     </script>
 @endsection

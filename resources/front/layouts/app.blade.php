@@ -41,7 +41,7 @@
 						</div>
 					@endif
 
-					@if (getProducts()->isNotEmpty())
+					{{-- @if (getProducts()->isNotEmpty())
 						@foreach (getProducts() as $value )	
 						<div class="menu-category">	
 							<div class="menu-category__img">
@@ -56,7 +56,7 @@
 							</div>
 						</div>
 						@endforeach
-					@endif
+					@endif --}}
 				</div>
 			</section>
     @yield('content')
@@ -85,7 +85,7 @@
                     $("#wishlistModal .modal-body").html(response.message);
                     $("#wishlistModal").modal('show');
                 } else {
-                    window.location.href= "{{ route('account.login') }}";
+                    window.location.href= "{{ route('user.home') }}";
                     //alert(response.message);
                 }
             }

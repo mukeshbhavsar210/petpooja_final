@@ -20,7 +20,7 @@
     <!-- Default box -->
     <div class="container-fluid">
 
-        @include('admin.message')
+        @include('admin.layouts.message')
 
         <div class="card">
             <form action="" method="get" >

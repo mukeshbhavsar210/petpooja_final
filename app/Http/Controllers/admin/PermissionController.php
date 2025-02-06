@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller implements HasMiddleware 
 {
@@ -23,8 +24,13 @@ class PermissionController extends Controller implements HasMiddleware
     public function index(){
         $permissions = Permission::orderBy('created_at','DESC')->paginate(10);
 
+        $totalPermissions = DB::table('permissions')
+                    ->select(DB::raw('count(*) as total'))
+                    ->get()[0]->total;
+
         return view("admin.permissions.list", [
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'totalPermissions' => $totalPermissions
         ]);
     }
 

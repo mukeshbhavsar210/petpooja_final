@@ -149,7 +149,9 @@ class UserController extends Controller implements HasMiddleware
             'areas'=> $areas,
             'seats'=> $seats,
         ];
-        //dd($seats);
+        
+        //dd($data);
+
         return view('welcome', $data);    
     }
 }

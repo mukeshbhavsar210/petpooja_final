@@ -21,4 +21,8 @@ class Area extends Model
         return $this->hasMany(Menu::class);
     }
 
+    public function seating(){
+        return $this->hasMany(Seat::class);
+    }
+
 }

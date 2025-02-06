@@ -40,7 +40,7 @@ class AreaController extends Controller {
         $data['totalTable'] = $totalTable;
         $data['totalArea'] = $totalArea;        
                
-        //dd($seats);
+        //dd($data);
 
         return view('admin.areas.list', $data);
     }

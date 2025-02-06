@@ -14,10 +14,8 @@
     </div>
     <!-- /.container-fluid -->
 </section>
-<!-- Main content -->
-<section class="content">
-    <!-- Default box -->
-    <div class="container-fluid">
+
+<div class="container-fluid">
         <form action="" method="post" id="pageForm" name="pageForm">
             <div class="card">
                 <div class="card-body">
@@ -52,8 +50,6 @@
             </div>
         </form>
     </div>
-    <!-- /.card -->
-</section>
 @endsection
 
 @section('customJs')

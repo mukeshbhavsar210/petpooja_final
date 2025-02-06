@@ -40,14 +40,8 @@ class SeatController extends Controller
     public function store(Request $request){
         //QR CODE
         $number = mt_rand(1000000000, 9999999999);        
-        // if($this->productCodeExists($number)){
-        //     $number = mt_rand(1000000000, 9999999999);
-        // }
         $request['product_code'] = $number;
-       
-        //Seating::create($request->all());
 
-        //Validation
         $validator = Validator::make($request->all(), [
              
         ]);

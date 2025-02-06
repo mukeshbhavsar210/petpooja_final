@@ -15,8 +15,7 @@
     </div>
 </section>
 
-<section class="content">
-    <div class="container-fluid">
+<div class="container-fluid">
         @include('admin.layouts.message')
             <form action="{{ route('roles.update',$role->id) }}" method="post">
                 @csrf
@@ -47,5 +46,4 @@
                 </form> 
             </div>               
         </div>
-    </section>
 @endsection

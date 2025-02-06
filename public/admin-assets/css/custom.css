@@ -207,13 +207,14 @@ border-bottom-right-radius: 0;
 .flex-wrapper .form-adding .form-control { border-radius: 4px 0 0 4px;}
 .flex-wrapper .form-adding .btn { border-radius: 0 4px 4px 0;}
 
+
 .count { background-color: #007bff; font-size: 12px; margin-left:5px; position: relative; top:-2px; padding:4px 8px; text-align: center; color:#fff; border-radius: 100px;}
 .count-sub { background-color: #666; font-size: 11px; margin-left:5px; position: relative; top:-2px; padding:4px 8px; text-align: center; color:#fff; border-radius: 100px; }
-.addBtn { border-radius: 100px; height: 28px; width: 28px; padding:1px 5px; margin-right: 10px; background-color: #fff; color: #000; position: relative; top:2px; border:1px #666 solid;}  
-.addBtn:hover { background-color: #007bff; border-color:#007bff; color: #fff;}  
-.removeBtn { border-radius: 100px; height: 28px; width: 28px; padding:1px 5px; margin-right: 10px; background-color: #000; color: #fff; position: relative; top:2px;}  
-.removeBtn:hover { background-color: #007bff; border-color:#007bff; color: #fff; }  
+.svgBtn { margin-right: 10px; position: relative; top:2px; background: none; border: none; padding:0;}  
+.removeBtn { margin-right: 10px; position: relative; top:0px; left:-1px; background: none; border: none; padding:0;}  
 .form { border:1px #ccc solid; box-shadow: 0 8px 15px rgba(0, 0, 0, .3); position: absolute; top:46px; left:0; width: 300px; z-index: 9; padding:20px; background-color: #fff; border-radius: 7px; display: none;}
+.form .form-group { position: relative;}
+.form .form-group .tickBtn { position: absolute; right:8px; top:6px; background: none; padding:0; border:none;}
 .form::before { content: ''; position: absolute; top: -10px; left: 7px; width: 20px; height: 20px; background: #fff;  transform: rotate(45deg); z-index: -1; }
 .active .form, .active .removeBtn { display: block;}
 .active .addBtn { display: none;}
@@ -243,3 +244,4 @@ cursor: pointer;
 .invisible-checkboxes:has(input:checked) .checkbox-alias {
   background-color: #007bff;
 }
+

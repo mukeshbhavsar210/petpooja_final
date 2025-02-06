@@ -22,7 +22,7 @@ class SettingController extends Controller
 
         $data=['user' => $user];        
 
-        return view('admin.settings.index', $data);
+        return view('admin.settings.list', $data);
     }
    
 

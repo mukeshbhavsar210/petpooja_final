@@ -17,7 +17,7 @@
 
 <section>
     <div class="container-fluid">
-        @include('admin.message')
+        @include('admin.layouts.message')
 
         <div class="modal fade drawer right-align" id="exampleModalRight" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

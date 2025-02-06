@@ -66,8 +66,6 @@ Route::post('checkout/razorpay',[CartController::class,'razorpayPayment'])->name
 Route::get('checkout/payment-success',[CartController::class,'razorpaySuccess'])->name('checkout.success');
 Route::get('checkout/payment-failed',[CartController::class,'razorpayFailed'])->name('checkout.failed');
 
-
-
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -96,6 +94,10 @@ Route::middleware('auth')->group(function () {
 
      //Sub Categories Connect to main Categories
      Route::get('/product-subcategories', [ProductSubCategoryController::class, 'index'])->name('product-subcategories.index');
+     
+     //Delete Product Images Route
+     Route::post('/product-images/update', [ProductImageController::class, 'update'])->name('product-images.update');
+     Route::delete('/product-images', [ProductImageController::class, 'destroy'])->name('product-images.destroy');
 
      //Areas Routes
      Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');        
@@ -104,6 +106,13 @@ Route::middleware('auth')->group(function () {
      Route::get('/areas/{area}/edit', [AreaController::class, 'edit'])->name('areas.edit');
      Route::put('/areas/{area}', [AreaController::class, 'update'])->name('areas.update');
      Route::delete('/areas/{area}', [AreaController::class, 'destroy'])->name('areas.delete');
+
+    //Table Routes
+    Route::get('/tables', [SeatController::class, 'index'])->name('tables.index');
+    Route::post('/seatings', [SeatController::class, 'store'])->name('seatings.store');
+    Route::get('/tables/{table}/edit', [SeatController::class, 'edit'])->name('tables.edit');
+    Route::put('/tables/{table}', [SeatController::class, 'update'])->name('tables.update');
+    Route::delete('/tables/{table}', [SeatController::class, 'destroy'])->name('tables.delete');
 
     //Orders Routes
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -155,6 +164,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/permissions', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 
     //Roles
+    Route::resource('/roles', 'RoleController');
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');

@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller implements HasMiddleware 
 {
@@ -23,9 +24,16 @@ class RoleController extends Controller implements HasMiddleware
 
     public function index(){
         $roles = Role::orderBy('created_at','DESC')->paginate(10);
+        $permissions = Permission::orderBy('name','ASC')->get();
+
+        $totalRoles = DB::table('roles')
+                    ->select(DB::raw('count(*) as total'))
+                    ->get()[0]->total;
 
         return view("admin.roles.list", [
-            'roles' => $roles
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'totalRoles' => $totalRoles
         ]);
     }
 
