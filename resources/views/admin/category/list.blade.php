@@ -91,7 +91,7 @@
                                 <p></p>
                             </div> 
 
-                            <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug">
+                            <input type="hidden" name="slug" id="slug" class="form-control" placeholder="Slug">
 
                             <div class="form-group">
                                 <input type="hidden" id="image_id" name="image_id" value=" ">
@@ -118,6 +118,7 @@
                     @foreach ($categories as $value)
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs_{{ $value->id }}" role="tab">{{ $value->name }} 
+                                {{-- {{ $value->name->count('name') }} --}}
                                 @if($value->total_products > 0)
                                     <span class="count-sub">{{ $value->total_products }}</span>    
                                 @endif                                

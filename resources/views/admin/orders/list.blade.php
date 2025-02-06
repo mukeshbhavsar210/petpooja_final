@@ -15,7 +15,6 @@
     </div>
 </section>
 
-<section class="content">
     <div class="container-fluid">
         @include('admin.layouts.message')
         <div class="card">
@@ -202,7 +201,4 @@
             </div>
         </div>
     </div>
-    <!-- /.card -->
-</section>
-<!-- /.content -->
 @endsection

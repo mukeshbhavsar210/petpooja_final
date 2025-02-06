@@ -48,8 +48,8 @@ Route::delete('remove-from-wishlist', [FrontController::class, 'removeWishlistIt
 Route::get('clear-wishlist', [FrontController::class, 'clearWishlist']);
 
 //Front pages routes
-Route::get('/', [UserController::class, 'show'])->name('user.home');
-//Route::get('/', [FrontController::class, 'show'])->name('user.home');
+//Route::get('/', [UserController::class, 'show'])->name('user.home');
+Route::get('/', [FrontController::class, 'show'])->name('user.home');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
 Route::get('area/{areaSlug?}',[FrontController::class,'restaurant'])->name('front.restaurant');
 

@@ -15,27 +15,31 @@
     </div>
 </section>
 
-<section class="content">
-    <div class="container-fluid">
+<div class="container-fluid">
         @include('admin.layouts.message')
             <form action="{{ route('users.update',$user->id) }}" method="post">
                 @csrf
                 <div class="card">
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="" >Name</label><br />
-                            <input value="{{ old('name', $user->name) }}" name="name" placeholder="name" type="text" class="form-control"/>
-                            @error('name')
-                                <p class="text-red-400 font-small">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="" >Email</label><br />
-                            <input value="{{ old('email', $user->email) }}" name="email" placeholder="email" type="text" class="form-control"/>
-                            @error('email')
-                                <p class="text-red-400 font-small">{{ $message }}</p>
-                            @enderror
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" >Name</label><br />
+                                    <input value="{{ old('name', $user->name) }}" name="name" placeholder="name" type="text" class="form-control"/>
+                                    @error('name')
+                                        <p class="text-red-400 font-small">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" >Email</label><br />
+                                    <input value="{{ old('email', $user->email) }}" name="email" placeholder="email" type="text" class="form-control"/>
+                                    @error('email')
+                                        <p class="text-red-400 font-small">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -55,6 +59,5 @@
                 </div>
             </form>
         </div>
-    </section>
 @endsection
         

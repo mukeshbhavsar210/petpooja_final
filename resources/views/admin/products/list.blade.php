@@ -9,11 +9,6 @@
             </div>
             <div class="col-sm-3">
                 <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addProducts">Add Product</button>
-                <form action="product_view" method="post">
-                    @csrf
-                    <input type="checkbox" id="view" name="view" value="grid_view">
-                    <label for="view">Grid</label>                    
-                </form>
             </div>
         </div>
     </div>

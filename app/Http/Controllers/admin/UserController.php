@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Area;
 use App\Models\Seat;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -31,16 +32,15 @@ class UserController extends Controller implements HasMiddleware
      */
     public function index(){
         $users = User::latest()->paginate(25);
-
-        return view("admin.users.list", [
-            'users' => $users
-        ]);
-    }
-
-    public function create(){
         $roles = Role::orderBy('name','ASC')->get();
 
-        return view("admin.users.create", [  
+        $totalUsers = DB::table('users')
+                    ->select(DB::raw('count(*) as total'))
+                    ->get()[0]->total;
+
+        return view("admin.users.list", [
+            'users' => $users,
+            'totalUsers' => $totalUsers,
             'roles' => $roles
         ]);
     }

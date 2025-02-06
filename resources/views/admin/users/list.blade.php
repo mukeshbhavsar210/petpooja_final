@@ -6,11 +6,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h1>Users</h1>
+                <h1>Users <span class="count">{{ $totalUsers }}</span></h1>
             </div>
             <div class="col-sm-6 text-right">
                 @can('create users')
-                    <a href="{{ route('users.create') }}" class="btn btn-primary">Create User</a>
+                    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createUser">Create User</button>
                 @endcan
             </div>
         </div>
@@ -20,6 +20,78 @@
 <section>
     <div class="container-fluid">
         @include('admin.layouts.message')
+
+        <div class="modal fade drawer right-align" id="createUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form action="{{ route('users.store') }}" method="post">
+                        @csrf
+                        <div class="modal-body">                  
+                              <div class="form-group">
+                                <label for="" >Name</label>
+                                <input value="{{ old('name') }}" name="name" placeholder="name" type="text" class="form-control"/>
+                                @error('name')
+                                    <div class="alert alert-danger" role="alert">{{ $message }}</div>
+                                @enderror
+                            </div>  
+                            
+                            <div class="form-group">
+                                <label for="" >Email</label>
+                                <input value="{{ old('email') }}" name="email" placeholder="email" type="text" class="form-control"/>
+                                @error('email')
+                                    <div class="alert alert-danger" role="alert">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="password" >Password</label>
+                                        <input value="{{ old('password') }}" name="password" placeholder="Password" type="password" class="form-control"/>
+                                        @error('password')
+                                            <div class="alert alert-danger" role="alert">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="confirm_password" >Confirm Password</label>
+                                        <input value="{{ old('confirm_password') }}" name="confirm_password" placeholder="Confirm Password" type="password" class="form-control"/>
+                                        @error('confirm_password')
+                                            <div class="alert alert-danger" role="alert">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p><b>Select Role</b></p>
+                            <div class="row">                                
+                                @if($roles->isNotEmpty())
+                                    @foreach ($roles as $value)
+                                        <div class="col-md-6">                                            
+                                            <input type="checkbox" id="role-{{ $value->id }}" class="rounded" name="role[]" value="{{ $value->name }}" />
+                                            <label for="role-{{ $value->id }}">{{ $value->name }}</label>
+                                        </div>        
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
             <table class="table border">
                 <thead>
                     <tr>
