@@ -30,10 +30,15 @@ class RoleController extends Controller implements HasMiddleware
                     ->select(DB::raw('count(*) as total'))
                     ->get()[0]->total;
 
+        $permissionCount = DB::table('permissions')
+                    ->select(DB::raw('count(*) as total'))
+                    ->get()[0]->total;
+
         return view("admin.roles.list", [
             'roles' => $roles,
             'permissions' => $permissions,
-            'totalRoles' => $totalRoles
+            'totalRoles' => $totalRoles,
+            'permissionCount' => $permissionCount,
         ]);
     }
 

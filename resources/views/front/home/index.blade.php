@@ -3,17 +3,17 @@
 @section('content')
 
 @if (Route::has('login'))
-<div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-    @auth
-        <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
-    @else
-        <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
+    <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
+        @auth
+            <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
+        @else
+            <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
 
-        @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-        @endif
-    @endauth
-</div>
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+            @endif
+        @endauth
+    </div>
 @endif
 
 <div class="menu-content--categories-medium-photo menu-content">
@@ -233,15 +233,15 @@
                 @if(!empty($details))
                 <div class="tab-content">
                     <div class="tab-pane p-3 active" id="tabs-1" role="tabpanel">
-                        @include('front.home.tab_01')
+                        {{-- @include('front.home.tab_01') --}}
                     </div>
 
                     <div class="tab-pane p-3" id="tabs-2" role="tabpanel">
-                        @include('front.home.tab_02')
+                        {{-- @include('front.home.tab_02') --}}
                     </div>
 
                     <div class="tab-pane p-3" id="tabs-3" role="tabpanel">
-                        @include('front.home.tab_03')
+                        {{-- @include('front.home.tab_03') --}}
                     </div>
                 </div>                
             @endif
@@ -268,7 +268,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('user.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -293,7 +293,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('user.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -317,7 +317,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('user.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -341,7 +341,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('user.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -411,7 +411,7 @@
                 success: function(data) {
                     $("#adding-cart-" + productId).show();
                     $("#add-cart-btn-" + productId).hide();
-                    window.location.href='{{ route("front.home") }}';
+                    window.location.href='{{ route("user.home") }}';
                 },
                 error: function(error) {
                     console.error('Error adding to cart:', error);

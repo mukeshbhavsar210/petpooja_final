@@ -48,7 +48,7 @@ class CategoryController extends Controller
         $data['menus'] = $menus;
         $data['menuCount'] = $menuCount;
 
-        //dd($userNames);
+        //dd($menuNew);
         
         return view('admin.category.list', $data);
     }

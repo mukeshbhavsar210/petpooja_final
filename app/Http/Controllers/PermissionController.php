@@ -27,10 +27,6 @@ class PermissionController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function create(){
-        return view("permissions.create");
-    }
-
     public function store(Request $request){
         $validator = Validator::make($request->all(), [ 
             'name' => 'required|unique:permissions|min:3'

@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h1>Roles  <span class="count">{{ $totalRoles }}</span></h1>
+                <h1>Roles <span class="count">{{ $totalRoles }}</span></h1>
             </div>
             <div class="col-sm-6 text-right">
                 @can('create roles')
@@ -60,27 +60,6 @@
             </div>
         </div>
     </div>
-
-
-    <a data-toggle="modal" data-target="#editRole" class="btn btn-primary user_dialog" data-id="ddd">Edit</a>
-
-    <div class="modal fade drawer right-align" id="editRole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Menu</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <form action="{{ route('roles.update',$roles->id) }}" method="post">
-                    @csrf
-                    
-                    </form> 
-                </div>      
-            </div>
-        </div>
     </div>
 
     <div id="accordion" class="accordion">
@@ -90,7 +69,13 @@
                     <div class="card-header collapsed" data-toggle="collapse" href="#collapse_{{ $value->id }}">
                         <div class="row">
                             <div class="col-md-11">
-                                <a class="card-title">{{ $value->name }}</a>
+                                <a class="card-title">{{ $value->name }} 
+                                    @if($value->name == 'Super Admin')
+                                    <span class="count-sub">All permissions</span>
+                                    @else
+                                        <span class="count-sub">{{ $value->permissions->count('name') }}</span>
+                                    @endif                                    
+                                </a>
                             </div>
                             <div class="col-md-1">
                                 @can('edit roles')
@@ -114,8 +99,9 @@
                         @if($value->name == 'Super Admin')
                             <p><b>You're Super Admin, So not required any permission</b></p>
                         @else
-                            <p>{{ $value->permissions->pluck('name')->implode(',   ') }}</p>
+                            <p>{{ $value->permissions->pluck('name')->implode(", ") }}</p>
                         @endif
+                            
                         <p>{{ \Carbon\Carbon::parse($value->created_at)->format('d M, Y') }}</p>
                     </div>
                 @endforeach
@@ -123,7 +109,7 @@
         </div>
     </div>              
         <div class="my-3">
-            {{ $roles->links() }}
+            {{-- {{ $roles->links() }} --}}
         </div>
     </div>
 </div>
