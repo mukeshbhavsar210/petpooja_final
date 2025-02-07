@@ -59,6 +59,12 @@
                         </a>
                     </li> 
                 @endcan
+                <li class="nav-item">
+                    <a href="{{ route('configurations.index') }}" class="nav-link {{ (\Request::route()->getName() == 'configurations.index') ? 'active' : '' }}">
+                        <p>Configuration</p>
+                    </a>
+                </li>  
+                
                 @can('view settings')
                     <li class="nav-item">
                         <a href="{{ route('settings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'settings.index') ? 'active' : '' }}">

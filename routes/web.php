@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\AreaController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\ConfigurationController;
 use App\Http\Controllers\admin\DiscountCodeController;
 use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\OrderController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\admin\QrController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\ShippingController;
+use App\Http\Controllers\admin\TaxController;
 use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
@@ -172,14 +174,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
 
-    //Articles
-    Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
-    Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
-    Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
-    Route::post('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
-    Route::delete('/articles', [ArticleController::class, 'destroy'])->name('articles.destroy');
-
+    //Permissions
+    Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configurations.index');
+    Route::get('/configurations/create', [ConfigurationController::class, 'create'])->name('configurations.create');
+    Route::post('/configurations', [ConfigurationController::class, 'store'])->name('configurations.store');
+    Route::get('/configurations/{id}/edit', [ConfigurationController::class, 'edit'])->name('configurations.edit');
+    Route::post('/configurations/{id}', [ConfigurationController::class, 'update'])->name('configurations.update');
+    Route::delete('/configurations', [ConfigurationController::class, 'destroy'])->name('configurations.destroy');
+    
     //Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
