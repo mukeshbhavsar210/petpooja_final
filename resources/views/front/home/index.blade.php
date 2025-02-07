@@ -2,20 +2,6 @@
 
 @section('content')
 
-@if (Route::has('login'))
-    <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-        @auth
-            <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
-        @else
-            <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-            @endif
-        @endauth
-    </div>
-@endif
-
 <div class="menu-content--categories-medium-photo menu-content">
     <section class="menu-products-section menu-products-section--grid">
         <div class="menu-grid">
@@ -254,7 +240,6 @@
 
 @section('customJs')
 <script>
-
     $("#orderItemForm").submit(function(event){
         event.preventDefault();
         var element = $(this);
@@ -278,7 +263,6 @@
             }
         })
     }); 
-
 
     $("#diningForm").submit(function(event){
         event.preventDefault();
@@ -370,31 +354,6 @@
             });
         }
     });
-
-    $('.add').click(function(){
-        var qtyElement = $(this).parent().prev(); // Qty Input
-        var qtyValue = parseInt(qtyElement.val());
-        if (qtyValue < 10) {
-            qtyElement.val(qtyValue+1);
-
-            var rowId = $(this).data('id');
-            var newQty = qtyElement.val();
-            updateCart(rowId,newQty)
-        }            
-    });
-
-    $('.sub').click(function(){
-        var qtyElement = $(this).parent().next();
-        var qtyValue = parseInt(qtyElement.val());
-        if (qtyValue > 1) {
-            qtyElement.val(qtyValue-1);
-
-            var rowId = $(this).data('id');
-            var newQty = qtyElement.val();
-            updateCart(rowId,newQty)
-        }
-    });
-
 
     //Hide alert 
     $(function() {
