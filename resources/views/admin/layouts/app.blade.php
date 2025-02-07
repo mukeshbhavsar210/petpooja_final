@@ -16,6 +16,19 @@
 <link rel="stylesheet" href="{{ asset('admin-assets/plugins/select2/css/select2.min.css') }} ">
 <link rel="stylesheet" href="{{ asset('admin-assets/css/datetimepicker.css') }} ">
 <meta name="csrf-token" content="{{ csrf_token() }}">		
+
+{{-- <style>
+	body {
+		background-color: #{{ $theme->pluck('primary_color')->implode('') }};
+	}
+	.btn-primary {
+		background-color: #{{ $theme->pluck('secondary_color')->implode('') }};
+	}
+	.nav-link.active {
+		background-color: #{{ $theme->pluck('secondary_color')->implode('') }};
+	}
+</style> --}}
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -171,6 +184,13 @@
 		@include('admin/layouts/sidebar')
 
 		<div class="content-wrapper">
+
+			{{-- @if (getTheme()->isNotEmpty())
+				@foreach (getTheme() as $value )
+					<h1>{{ $value->primary_color }}</h1>
+				@endforeach
+			@endif --}}
+
 			@yield('content')
 		</div>
 
@@ -182,8 +202,6 @@
 	<script src="{{ asset('admin-assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('admin-assets/js/adminlte.min.js') }}"></script>
 	<script src="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.js') }}"></script>
-	<script src="{{ asset('admin-assets/plugins/summernote/summernote-bs4.min.js') }}"></script>
-	<script src="{{ asset('admin-assets/plugins/select2/js/select2.min.js') }}"></script>
 	<script src="{{ asset('admin-assets/js/datetimepicker.js') }}"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="{{ asset('admin-assets/js/demo.js') }}"></script>

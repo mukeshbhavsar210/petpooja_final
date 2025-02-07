@@ -29,33 +29,35 @@ class ConfigurationController extends Controller
         if($validator->passes()){
             $data = new Configuration();
             $data->name = $request->name;
+            $data->image = $request->image;
             $data->email = $request->email;
             $data->phone = $request->phone;
             $data->address = $request->address;
-            $data->theme = $request->theme;
+            $data->primary_color = $request->primary_color;
+            $data->secondary_color = $request->secondary_color;
             $data->save();
-            
 
-            if (!empty($request->image_id)) {
-                $tempImage = TempImage::find($request->image_id);
-                $extArray = explode('.',$tempImage->name);
-                $ext = last($extArray);
+            // if (!empty($request->image_id)) {
+            //     $tempImage = TempImage::find($request->image_id);
+            //     $extArray = explode('.',$tempImage->name);
+            //     $ext = last($extArray);
 
-                $newImageName = $data->name.'.'.$ext;                
-                $sPath = public_path().'/temp/'.$tempImage->name;
-                $dPath = public_path().'/uploads/website_logo/'.$newImageName;                
-                File::copy($sPath,$dPath);
+            //     $newImageName = $data->name.'.'.$ext;                
+            //     $sPath = public_path().'/temp/'.$tempImage->name;
+            //     $dPath = public_path().'/uploads/website_logo/'.$newImageName;                
+            //     File::copy($sPath,$dPath);
+            //     $data->save();
 
-                // //Generate thumbnail
-                $dPath = public_path().'/uploads/website_logo/'.$newImageName;
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($sPath);
-                $image->cover(400,300);
-                $image->save($dPath);
-                $image->save($dPath);                                  
-                $data->image = $newImageName;
-                $data->save();
-            }
+            //     // //Generate thumbnail
+            //     // $dPath = public_path().'/uploads/website_logo/'.$newImageName;
+            //     // $manager = new ImageManager(new Driver());
+            //     // $image = $manager->read($sPath);
+            //     // $image->cover(400,300);
+            //     // $image->save($dPath);
+            //     // $image->save($dPath);                                  
+            //     // $data->image = $newImageName;
+            //     // $data->save();
+            // }
 
             return redirect()->route('configurations.index')->with('success','Configurations added successfully.');
         } else {

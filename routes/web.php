@@ -150,7 +150,6 @@ Route::middleware('auth')->group(function () {
         ]);
     })->name('getSlug');
 
-      
 
     //Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

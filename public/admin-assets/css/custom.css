@@ -245,3 +245,6 @@ cursor: pointer;
   background-color: #007bff;
 }
 
+
+.theme { margin: 5px; border:1px #ccc solid; padding:5px; border-radius: 4px; } 
+.theme-primary { height: 25px; width: 25px; border-radius: 4px;  } 

@@ -45,7 +45,6 @@
     <div class="tab-content">
         <div class="tab-pane active" id="tabs-1" role="tabpanel">
             @include('admin.configurations.step1')
-                
         </div>
         <div class="tab-pane" id="tabs-2" role="tabpanel">
             <div class="card">
@@ -71,16 +70,15 @@
         <div class="tab-pane" id="tabs-5" role="tabpanel">
             <div class="card">
                 <div class="card-body">
-                    @foreach ($configurations as $value)
-                        <h4>{{ $value->taxes }} - {{ $value->percentages }}%</h4>
-                    @endforeach
+                    {{ $configurations->pluck('taxes')->implode('') }}
+                    {{ $configurations->pluck('percentages')->implode('') }} %
                 </div>
             </div>
         </div>
         <div class="tab-pane" id="tabs-6" role="tabpanel">
             <div class="card">
                 <div class="card-body">
-                    {{-- {{ $value->plan }} --}}
+                    {{ $configurations->pluck('plan')->implode('') }}
                 </div>
             </div>                
         </div>
