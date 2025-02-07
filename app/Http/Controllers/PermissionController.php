@@ -22,7 +22,7 @@ class PermissionController extends Controller implements HasMiddleware
     public function index(){
         $permissions = Permission::orderBy('created_at','DESC')->paginate(10);
 
-        return view("permissions.list", [
+        return view("admin.permissions.list", [
             'permissions' => $permissions
         ]);
     }
@@ -44,7 +44,7 @@ class PermissionController extends Controller implements HasMiddleware
     public function edit($id){
         $permission = Permission::findOrFail($id);
 
-        return view("permissions.edit", [
+        return view("admin.permissions.edit", [
             'permission' => $permission
         ]);
     }
