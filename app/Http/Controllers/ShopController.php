@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Area;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Product;
-use App\Models\Seating;
-use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
