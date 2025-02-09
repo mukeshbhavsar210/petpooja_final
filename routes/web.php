@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\ProfileController;
 use App\Http\Controllers\admin\RoleController;
@@ -11,20 +10,15 @@ use App\Http\Controllers\admin\AreaController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ConfigurationController;
-use App\Http\Controllers\admin\DiscountCodeController;
 use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\PageController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
-use App\Http\Controllers\admin\QrController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SettingController;
-use App\Http\Controllers\admin\ShippingController;
-use App\Http\Controllers\admin\TaxController;
 use App\Http\Controllers\admin\TempImagesController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
@@ -50,8 +44,8 @@ Route::delete('remove-from-wishlist', [FrontController::class, 'removeWishlistIt
 Route::get('clear-wishlist', [FrontController::class, 'clearWishlist']);
 
 //Front pages routes
-//Route::get('/', [UserController::class, 'show'])->name('user.home');
-Route::get('/', [FrontController::class, 'show'])->name('user.home');
+//Route::get('/', [UserController::class, 'show'])->name('front.home');
+Route::get('/', [FrontController::class, 'show'])->name('front.home');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
 Route::get('area/{areaSlug?}',[FrontController::class,'restaurant'])->name('front.restaurant');
 

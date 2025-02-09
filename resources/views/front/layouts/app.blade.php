@@ -18,7 +18,7 @@
 			<header id="sticky-header">
 				<div class="header">
 					<div class="header__restaurant-name">
-						<a href="{{ route('front.restaurant') }}" class="logo"><img style="width: 120px" src="{{ asset('front-assets/images/logo.jpg') }} " alt=""></a>
+						<a href="{{ route('front.home') }}" class="logo"><img style="width: 120px" src="{{ asset('front-assets/images/logo.jpg') }} " alt=""></a>
 						<div class="float-end">
 							@if (Route::has('login'))
 								@auth
@@ -42,15 +42,14 @@
 							<div class="menu-category__img">
 								<a href="{{  route('front.wishlist') }}">
 									<img src="https://instalacarte.com/media/cache/emoji_small/emoji/favourite.png?v3" alt="Favourites">
-										<div class="menu-category__name no-wrap"><div>
-											Favourites 
-										</div>
-									</a>
-								</div>
+									<div class="menu-category__name no-wrap"><div>
+										Favourites 
+									</div>
+								</a>
 							</div>
 						</div>
-					@endif
-
+					</div>
+				@endif
 					@if (getProducts()->isNotEmpty())
 						@foreach (getProducts() as $value )	
 							<div class="menu-category">	
@@ -72,13 +71,11 @@
 					@endif
 				</div>
 			</section>
-
     		@yield('content')
 		</div>
 	</div>
 
 <script src="{{ asset('front-assets/js/jquery-3.7.1.js') }}"></script>
-<script src="{{ asset('front-assets/js/popper.min.js') }}"></script>
 <script src="{{ asset('front-assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('front-assets/js/custom.js') }}"></script>
 <script>
@@ -99,8 +96,8 @@
                     $("#wishlistModal .modal-body").html(response.message);
                     $("#wishlistModal").modal('show');
                 } else {
-                    window.location.href= "{{ route('user.home') }}";
-                    //alert(response.message);
+                    window.location.href= "{{ route('front.home') }}";
+                    alert(response.message);
                 }
             }
         })

@@ -112,7 +112,7 @@ class FrontController extends Controller {
                     "name" => $product->name,
                     "quantity" => 1,
                     "price" => $product->price,
-                    //"seat" => $product->seat,
+                    "seat" => $product->seat,
                     "product_image" => $product->product_images->first()->toArray(),
                 ]
             ];
@@ -131,7 +131,7 @@ class FrontController extends Controller {
             "name" => $product->name,
             "quantity" => 1,
             "price" => $product->price,
-            //"seat" => $product->seat,
+            "seat" => $product->seat,
             "product_image" => $product->product_images->first()->toArray(),
         ];
 
