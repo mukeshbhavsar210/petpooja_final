@@ -13,6 +13,7 @@ use App\Models\OrderItem;
 use App\Models\ProductImage;
 use App\Models\Seat;
 use App\Models\Seating;
+use App\Models\View;
 use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller {
@@ -33,6 +34,12 @@ class FrontController extends Controller {
 
         return view('front.home.index', $data);        
     }
+
+
+    // public function store_views(Request $request){
+    //     View::create([ 'view' => $request->view ]);
+    //     return redirect()->route('products.index')->with('success','View changed.');
+    // }
 
 
     public function wishlist() {

@@ -17,26 +17,35 @@
 <link rel="stylesheet" href="{{ asset('admin-assets/css/datetimepicker.css') }} ">
 <meta name="csrf-token" content="{{ csrf_token() }}">		
 
-{{-- <style>
-	body {
-		background-color: #{{ $theme->pluck('primary_color')->implode('') }};
-	}
-	.btn-primary {
-		background-color: #{{ $theme->pluck('secondary_color')->implode('') }};
-	}
-	.nav-link.active {
-		background-color: #{{ $theme->pluck('secondary_color')->implode('') }};
-	}
-</style> --}}
+<?php
 
+if (getTheme()->isNotEmpty()) {
+	$primaryColor = getTheme()->pluck('primary_color')->implode('');
+	$secondaryColor = getTheme()->pluck('secondary_color')->implode('');
+	$sidebarColor = getTheme()->pluck('sidebar')->implode('');	
+} else {
+	$primaryColor = "#007bff";
+	$secondaryColor = "#007bff";
+	$sidebarColor = "#000000";
+}
+?>
+<style>
+	:root {
+	  --primary-color: {{ $primaryColor }};
+	  --secondary-color: {{ $secondaryColor }};
+	  --sidebar-color: {{ $sidebarColor }};
+	}
+	.btn-primary, .count,
+	.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active { background-color: var(--primary-color); border-color: var(--secondary-color); }
+	[class*=sidebar-dark-] { background-color: var(--sidebar-color); }
+</style>
 </head>
-
 <body class="hold-transition sidebar-mini">
 	<div class="wrapper">
 		<nav class="main-header navbar navbar-expand navbar-white navbar-light">
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+					<a class="nav-link" data-widget="pushmenu" href="#" role="button">looo</a>
 				</li>
 			</ul>
 			<div class="navbar-nav pl-2">
@@ -76,6 +85,7 @@
 					<a href="#" class="dropdown-item">
 						<!-- Message Start -->
 						<div class="media">
+							
 						<img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
 						<div class="media-body">
 							<h3 class="dropdown-item-title">
@@ -181,20 +191,17 @@
 			</ul>
 		</nav>
 
+		
+
 		@include('admin/layouts/sidebar')
 
 		<div class="content-wrapper">
-
-			{{-- @if (getTheme()->isNotEmpty())
-				@foreach (getTheme() as $value )
-					<h1>{{ $value->primary_color }}</h1>
-				@endforeach
-			@endif --}}
-
+			
 			@yield('content')
 		</div>
 
 		<footer class="main-footer">
+			
 			<strong>Copyright &copy; 2014-2022 AmazingShop All rights reserved.
 		</footer>
 	</div>

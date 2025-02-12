@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use App\Models\TempImage;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller implements HasMiddleware 
@@ -45,6 +49,8 @@ class PermissionController extends Controller implements HasMiddleware
 
         if($validator->passes()){
             Permission::create([ 'name' => $request->name ]);
+
+            
 
             return redirect()->route('permissions.index')->with('success','Permission added successfully.');
         } else {

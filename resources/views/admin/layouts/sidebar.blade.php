@@ -1,20 +1,16 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    @if (Auth::user()->restaurant_logo != '')
-        <div style="display: flex">
-            <img src="{{ asset('website_logo/'.Auth::user()->restaurant_logo) }}" alt="avatar"  class="img-fluid mt-4 ml-4" style="width: 50px;" >
-            <p style="color: #fff; margin:35px 0 0 10px;">{{ Auth::user()->restaurant_name }}</p>
-        </div>
+    @if ($logo = getTheme()->pluck('image')->implode(''))
+        <img src="{{ asset('uploads/logo/'.$logo) }}" alt="avatar"  class="img-fluid mt-4 ml-4" style="width: 100px;"  />
     @else
         <img src="{{ asset('admin-assets/img/AdminLTELogo.png') }}" alt="avatar"  class="rounded-circle img-fluid" style="width: 100px;">
     @endif 
     
     <!-- Sidebar -->
     <div class="sidebar">
-        <nav class="mt-2">
+        <nav>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{ (\Request::route()->getName() == 'admin.dashboard') ? 'active' : '' }}">
                         <p>Dashboard</p>
@@ -64,8 +60,7 @@
                     <a href="{{ route('configurations.index') }}" class="nav-link {{ (\Request::route()->getName() == 'configurations.index') ? 'active' : '' }}">
                         <p>Configuration</p>
                     </a>
-                </li>  
-                
+                </li>                  
                 @can('view settings')
                     <li class="nav-item">
                         <a href="{{ route('settings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'settings.index') ? 'active' : '' }}">
