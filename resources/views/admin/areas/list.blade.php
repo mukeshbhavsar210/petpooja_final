@@ -157,7 +157,6 @@
                                                     <div class="invisible-checkboxes">
                                                         <input {{ ($value->status == 'running') ? 'checked' : '' }} type="checkbox" id="custom_{{ $value->area_id }}_{{ $value->table_slug }}"  value="{{ $value->table_name }}" />
                                                         <label class="checkbox-alias" for="custom_{{ $value->area_id }}_{{ $value->table_slug }}">{{ $value->table_name }} <p class="small-text">Seats: {{ $value->seating_capacity }}</p></label>
-                                                        {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area->area_name.'/'.$value->table_slug, 'QRCODE',6.5,6.5) !!}
 
                                                         <div class="countSeat">
                                                             <a href="javascript:void(0)" data-toggle="modal" data-target="#showQR_branch_{{ $value->table_slug }}">QR</a>
@@ -175,8 +174,8 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <h2>{{ $value->table_name }}</h2>
-                                                                    <h2>{{ $value->area_name }}</h2>
-                                                                    {{-- {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->table_slug, 'QRCODE',6.5,6.5) !!} --}}
+                                                                    <p>{{ $value->area_name }}</p>
+                                                                    {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->table_slug, 'QRCODE',6.5,6.5) !!}
                                                                 </div>
                                                             </div>
                                                         </div>

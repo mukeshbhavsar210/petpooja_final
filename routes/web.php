@@ -49,23 +49,13 @@ Route::get('/', [FrontController::class, 'show'])->name('front.home');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
 Route::get('area/{areaSlug?}',[FrontController::class,'restaurant'])->name('front.restaurant');
 
-Route::get('/thanks/{orderId}',[CartController::class,'thankyou'])->name('front.checkout.thankyou');
-Route::post('/get-order-summary',[CartController::class,'getOrderSummary'])->name('front.getOrderSummary');
-Route::post('/apply-discount',[CartController::class,'applyDiscount'])->name('front.applyDiscount');
-Route::post('/remove-discount',[CartController::class,'removeCoupon'])->name('front.removeCoupon');
 Route::post('/add-to-wishlist',[FrontController::class,'addToWishlist'])->name('front.addToWishlist');
 Route::get('/page/{slug}',[FrontController::class,'page'])->name('front.page');
 Route::post('/send-contact-email',[FrontController::class,'sendContactEmail'])->name('front.sendContactEmail');
 
-//Payment routes
-Route::post('checkout/razorpay',[CartController::class,'razorpayPayment'])->name('checkout.razorpay');
-Route::get('checkout/payment-success',[CartController::class,'razorpaySuccess'])->name('checkout.success');
-Route::get('checkout/payment-failed',[CartController::class,'razorpayFailed'])->name('checkout.failed');
-
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-
     //Category Routes
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');        
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
@@ -120,7 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');        
     Route::post('/settings/website_information', [SettingController::class, 'websiteInformation'])->name('settings.websiteInformation');                
     Route::post('/settings/branch', [SettingController::class, 'branch'])->name('settings.branch');                
-    Route::post("/updateWebsiteLogo",[SettingController::class, 'update_logo'])->name('website.logo');
+    //Route::post("/updateWebsiteLogo",[SettingController::class, 'update_logo'])->name('website.logo');
 
     //Pages Routes
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
@@ -157,6 +147,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
     Route::post('/permissions/{id}', [PermissionController::class, 'update'])->name('permissions.update');
     Route::delete('/permissions', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+    Route::post("/updateWebsiteLogo",[PermissionController::class, 'update_logo'])->name('website.logo');
+
+    //Views
+    //Route::post('/views/{id}', [FrontController::class, 'store_views'])->name('views.store');
 
     //Roles
     Route::resource('/roles', 'RoleController');
@@ -171,8 +165,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configurations.index');
     Route::get('/configurations/create', [ConfigurationController::class, 'create'])->name('configurations.create');
     Route::post('/configurations', [ConfigurationController::class, 'store'])->name('configurations.store');
-    Route::get('/configurations/{id}/edit', [ConfigurationController::class, 'edit'])->name('configurations.edit');
-    Route::post('/configurations/{id}', [ConfigurationController::class, 'update'])->name('configurations.update');
+    //Route::get('/configurations/update', [ConfigurationController::class, 'edit'])->name('configurations.edit');
+    Route::post('/configurations/update', [ConfigurationController::class, 'update'])->name('configurations.update');
     Route::delete('/configurations', [ConfigurationController::class, 'destroy'])->name('configurations.destroy');
     
     //Users

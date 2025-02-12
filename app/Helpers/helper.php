@@ -10,7 +10,9 @@ use App\Models\Page;
 use App\Models\ProductImage;
 use App\Models\Seat;
 use App\Models\Configuration;
+use App\Models\Product;
 use App\Models\Seating;
+use App\Models\View;
 use Illuminate\Support\Facades\Mail;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -20,12 +22,16 @@ function getCategories(){
     
 function getProducts(){
     return Menu::orderBy('name','ASC')->orderBy('id','DESC')->get();
-}  
+} 
 
 function getTheme(){
     return Configuration::get();
-}  
+} 
 
+
+function gridTableView(){
+    return View::get();
+} 
 
 function getSeats(){
     return Seat::orderBy('table_name','ASC')->with('area')->orderBy('id','DESC')->get();

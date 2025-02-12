@@ -35,7 +35,6 @@ class ProductController extends Controller {
         return view ('admin.products.list', $data);
     }
 
-
     public function create(){
         $data = [];
         $categories = Category::orderBy('name','ASC')->get();        
