@@ -52,7 +52,7 @@ class AreaController extends Controller {
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'area_name' => 'required',            
+            'area_name' => 'required|unique:areas,area_name',
         ]);
 
         if ($validator->passes()) {
@@ -61,18 +61,9 @@ class AreaController extends Controller {
             $area->area_slug = $request->area_slug;
             $area->save();
 
-            $request->session()->flash('success', 'Restaurant added successfully');
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Restaurant added successfully'
-            ]);
-
+            return redirect()->route('configurations.index')->with('success','Restaurant added successfully.');
         } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
+            return redirect()->route('configurations.index')->withInput()->withErrors($validator);
         }
     }
 

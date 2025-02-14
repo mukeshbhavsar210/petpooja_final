@@ -15,11 +15,12 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller {
 
     public function index(Request $request){
-        $products = Product::latest('id')->with('product_images');
+        $products = Product::latest('id');
         $categories = Category::orderBy('name','ASC')->get();  
         
         $menuCount = DB::table('products')
@@ -52,85 +53,34 @@ class ProductController extends Controller {
         $validator = Validator::make($request->all(),$rules);
 
         if ($validator->passes()) {
-            $product = new Product;
-            $product->name = $request->name;            
-            $product->slug = $request->slug;                 
-            $product->category_id = $request->category;
-            $product->menu_id = $request->menu;
-            $product->description = $request->description;
-            $product->price = $request->price;
-            $product->compare_price = $request->compare_price;
-            $product->veg_nonveg = $request->veg_nonveg;
-            $product->save();
+            $data = new Product;
+            $data->name = $request->name;            
+            $data->slug = $request->slug;                 
+            $data->category_id = $request->category;
+            $data->menu_id = $request->menu;
+            $data->description = $request->description;
+            $data->price = $request->price;
+            $data->compare_price = $request->compare_price;
+            $data->veg_nonveg = $request->veg_nonveg;
 
-        // Save image here
-        if (!empty($request->image_id)) {
-            $tempImage = TempImage::find($request->image_id);
-            $extArray = explode('.',$tempImage->name);
-            $ext = last($extArray);
-
-            $newImageName = $product->id.'_'.$product->name.'.'.$ext;                
-            $sPath = public_path().'/temp/'.$tempImage->name;
-            $dPath = public_path().'/uploads/product/'.$newImageName;                
-            File::copy($sPath,$dPath);
-
-            //Generate thumbnail
-            $dPath = public_path().'/uploads/product/thumb/'.$newImageName;
-            $manager = new ImageManager(new Driver());
-            $image = $manager->read($sPath);
-            $image->cover(400,300);
-            $image->save($dPath);
-            $image->save($dPath);                                  
-            $product->image = $newImageName;
-            $product->save();
-        }
-
-        if (!empty($request->image_array)) {
-            foreach ($request->image_array as $temp_image_id) {
-                $tempImageInfo = TempImage::find($temp_image_id);
-                $extArray = explode('.',$tempImageInfo->name);
-                $ext = last($extArray);
-
-                $productImage = new ProductImage();
-                $productImage->product_id = $product->id;
-                $productImage->image = "NULL";
-                $productImage->save();
-                $imageName = $product->id.'-'.$productImage->id.'-'.time().'.'.$ext;
-                $productImage->image = $imageName;
-                $productImage->save();
-
-                //Large Image
-                $sourcePath = public_path().'/temp/'.$tempImageInfo->name;
-                $destPath = public_path().'/uploads/product/large/'.$imageName;
+            //Image upload
+            if ($request->hasFile('image')) { 
+                $file = $request->file('image');
+                $extenstion = $file->getClientOriginalExtension();
+                $fileName = $data->slug.'_'.time().'.'.$extenstion;
+                $path = public_path().'/uploads/product/'.$fileName;
                 $manager = new ImageManager(new Driver());
-                $image = $manager->read($sourcePath);
-                // $image->resize(1000, null, function ($constraint) {
-                //     $constraint->aspectRatio();
-                // });
-                $image->save($destPath);
-
-                //Generate Thumnail
-                $destPath = public_path().'/uploads/product/small/'.$imageName;
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($sourcePath);
-                $image->cover(400,300);
-                $image->save($destPath);
+                $image = $manager->read($file);
+                $image->toJpeg(80)->save($path);
+                $image->cover(500,500)->save($path);
+                $data->image = $fileName;
             }
+            
+            $data->save();
 
-        }
-
-        $request->session()->flash('success','Menu added successfully');
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Menu added successfully'
-        ]);
-
+            return redirect()->route('products.index')->with('success','Product added successfully.');
         } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
+            return redirect()->route('products.index')->withInput()->withErrors($validator);
         }
     }
 
@@ -172,7 +122,6 @@ class ProductController extends Controller {
         }
 
         //Fetch Product Images
-        $productImages = ProductImage::where('product_id',$product->id)->get();
         $subCategories = Menu::where('category_id',$product->category_id)->get();
         $categories = Category::orderBy('name','ASC')->get();
 
@@ -181,16 +130,15 @@ class ProductController extends Controller {
         $data['categories'] = $categories;
         $data['product'] = $product;
         $data['subCategories'] = $subCategories;
-        $data['productImages'] = $productImages;        
+             
 
         return view('admin.products.edit',$data);
     }
 
 
-
-
     public function update($id, Request $request){
-        $product = Product::find($id);
+        $data = Product::find($id);
+       
         $rules = [
             'name' => 'required',
         ];
@@ -198,28 +146,33 @@ class ProductController extends Controller {
         $validator = Validator::make($request->all(),$rules);
 
         if ($validator->passes()) {
-            $product->name = $request->name;            
-            $product->slug = $request->slug;     
-            $product->category_id = $request->category;
-            $product->menu_id = $request->menu;
-            $product->description = $request->description;
-            $product->price = $request->price;
-            $product->compare_price = $request->compare_price;
-            $product->veg_nonveg = $request->veg_nonveg;
-            $product->save();
+            $data->name = $request->name;            
+            $data->slug = $request->slug;     
+            $data->category_id = $request->category;
+            $data->menu_id = $request->menu;
+            $data->description = $request->description;
+            $data->price = $request->price;
+            $data->compare_price = $request->compare_price;
+            $data->veg_nonveg = $request->veg_nonveg;
 
-        $request->session()->flash('success','Product updated successfully');
+            //Image upload
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $extenstion = $file->getClientOriginalExtension();
+                $fileName = time().'.'.$extenstion;
+                $path = public_path().'/uploads/product/'.$fileName;
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($file);
+                $image->toJpeg(80)->save($path);
+                $image->cover(500,500)->save($path);
+                $data->image = $fileName;
+            }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Product updated successfully'
-        ]);
+            $data->save();
 
+            return redirect()->route('products.index')->with('success','Product updated successfully.');
         } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
+            return redirect()->route('products.index')->withInput()->withErrors($validator);
         }
     }
 

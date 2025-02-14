@@ -3,16 +3,14 @@
 @section('content')
 
 <section class="content-header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <h1>Roles <span class="count">{{ $totalRoles }}</span></h1>
-            </div>
-            <div class="col-sm-6 text-right">
-                @can('create roles')
-                    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createRole">Create Role</button>
-                @endcan                
-            </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h1>Roles <span class="count">{{ $totalRoles }}</span></h1>
+        </div>
+        <div class="col-sm-6 text-right">
+            @can('create roles')
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createRole">Create Role</button>
+            @endcan                
         </div>
     </div>
 </section>
@@ -24,7 +22,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Menu</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Roles</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -40,16 +38,20 @@
                                 <p class="text-red-400 font-small">{{ $message }}</p>
                             @enderror
                         </div>
-
-                        <div class="row">
-                            @if($permissions->isNotEmpty())
-                                @foreach ($permissions as $value)
-                                    <div class="col-md-6">
-                                        <input type="checkbox" id="permission_{{ $value->id }}" class="rounded" name="permission[]" value="{{ $value->name }}" />
-                                        <label for="permission_{{ $value->id }}">{{ $value->name }}</label>
-                                    </div>        
-                                @endforeach
-                            @endif
+                        
+                        <div class="checkboxSelect">
+                            <div class="form-group">
+                                <label>Select permission</label>
+                            </div>
+                            <div class="btn-group" name="area_name" id="options" data-toggle="buttons">
+                                @if($permissions->isNotEmpty())
+                                    @foreach ($permissions as $value)
+                                        <label class="btn btn-default" for="permission_{{ $value->id }}">{{ $value->name }}
+                                            <input type="checkbox" name="permission[]" id="permission_{{ $value->id }}" class="btn-check" value="{{ $value->name }}">
+                                        </label>
+                                    @endforeach
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

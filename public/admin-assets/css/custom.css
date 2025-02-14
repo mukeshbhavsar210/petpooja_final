@@ -1,9 +1,16 @@
 body { font-size: 15px;}
 ul, li { list-style-type: none; padding:0; margin: 0;}
 
+:root {
+  --grey-color { color:#666; }
+  --light-grey-color { color:#ccc; }
+}
 .content-header { padding:5px 0 15px 0; background-color: #fff;}
 .content-header h1 { font-size: 1.6rem; }
-.btn { padding:7px 13px; font-size: 14px;}
+.btn { padding:7px 13px; font-size: 14px; height: 39px;}
+.outlineBtn { padding:7px 13px; font-size: 13px;  border-radius: 3px; color:var(--light-grey-color); background: none; border-width:1px; border-style: solid; border-color: var(--light-grey-color);}
+.outlineBtn:hover { background-color: var(--primary-color); border-color: var(--primary-color);}
+.btnSmall { padding:5px 11px; font-size: 13px; border-radius: 3px; }
 
 .table td, .table th { padding:0.5rem;}
 
@@ -51,8 +58,8 @@ ul, li { list-style-type: none; padding:0; margin: 0;}
 .deleteCardImg { position: absolute; right:7px; top:7px; background-color: red; padding:0 3px; border-radius: 3px; height:20px; width: 18px; color:#fff; font-size: 13px; text-align: center; }
 .deleteCardImg:hover { background-color: #000; color: #fff;}
 
-.alert { position: absolute; top:-46px; left:40%; z-index:9999; width: 400px; padding:8px 13px;}
-.alert .close { padding:7px 10px;}
+/* .alert { position: absolute; top:-46px; left:40%; z-index:9999; width: 400px; padding:8px 13px;}
+.alert .close { padding:7px 10px;} */
 
 
 .form-group { margin-bottom: 10px; }
@@ -89,7 +96,7 @@ ul, li { list-style-type: none; padding:0; margin: 0;}
         border:none;
         border-radius: 0px;
         .modal-body{
-          overflow: auto;
+          overflow-y: scroll; height: 500px;
         }
       }
 
@@ -106,7 +113,7 @@ ul, li { list-style-type: none; padding:0; margin: 0;}
       }
     }
 
-    &.right-align{
+    &.right-align{ overflow-y: hidden;
       flex-direction: row-reverse; padding:0 !important;
     }
     &.left-align{
@@ -128,12 +135,34 @@ ul, li { list-style-type: none; padding:0; margin: 0;}
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
 }
-
-.vegContainer .btn-group { width: 100%; display: flex; font-size: 14px;}
-.vegContainer .btn-group .btn { background-color: #ffffff; border-width: 2px;}
-.vegContainer .btn-group .active { border:2px green solid; color: green; }
+.relative { position: relative;}
+.productControl { position: absolute; right: 10px; top:17px;}
+.productPrice { position: absolute; right: 15px; top:15px; background-color: var(--primary-color); color: #fff; padding:3px 8px; border-radius: 4px;}
+.produtName { border:1px #ccc solid; height: 40px; border-radius: 4px; display: flex; justify-content: space-between; margin-bottom: 10px;}
+.produtName input { border:none;  }
+.vegContainer .btn-group { width: 100%; display: flex; height: 38px; font-size: 14px; }
+.vegContainer .btn-group .btn { border: none; border-radius: 0; border-left:1px #ccc solid; height: 38px;}
+.vegContainer .btn-group .active { background-color: var(--primary-color);color: #fff; border-color: var(--primary-color); }
 .vegContainer .btn-group .innerView { display: flex; justify-content:space-evenly;}
 .vegContainer .btn-group .innerView img { width: 20px;}
+
+.tableSelection .btn-group { width: 100%; display: flex;}
+.tableSelection .btn-group .btn { line-height: 21px; text-transform: capitalize; font-size: 14px; }
+.tableSelection .btn-group .active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+.tableSelection .btn-group .innerView { display: flex; justify-content:space-evenly;}
+.tableSelection .btn-group .innerView img { width: 20px;}
+
+.checkboxSelect .btn-group { width: 100%; display: inline-block;}
+.checkboxSelect .btn-group .btn { text-transform: capitalize; font-size: 14px; width: 33%; margin-bottom: 2px; }
+.checkboxSelect .btn-group .active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+.checkboxSelect .btn-group .innerView { display: flex; justify-content:space-evenly;}
+.checkboxSelect .btn-group .innerView img { width: 20px;}
+
+.checkboxSelectEdit .btn-group { width: 100%; display: inline-block;}
+.checkboxSelectEdit .btn-group .btn { text-transform: capitalize; font-size: 14px; width: 19.7%; margin-bottom: 2px; }
+.checkboxSelectEdit .btn-group .active { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+.checkboxSelectEdit .btn-group .innerView { display: flex; justify-content:space-evenly;}
+.checkboxSelectEdit .btn-group .innerView img { width: 20px;}
 
 .tableCount { position: absolute; top:12px; right:20px; padding:5px 10px; font-size: 12px; background-color: green; border-radius: 100px; color: #fff;}
 
@@ -210,16 +239,19 @@ border-bottom-right-radius: 0;
 
 .count { background-color: #007bff; font-size: 12px; margin-left:5px; position: relative; top:-2px; padding:4px 8px; text-align: center; color:#fff; border-radius: 100px;}
 .count-sub { background-color: #666; font-size: 11px; margin-left:5px; position: relative; top:-2px; padding:4px 8px; text-align: center; color:#fff; border-radius: 100px; }
-.svgBtn { margin-right: 10px; position: relative; top:2px; background: none; border: none; padding:0;}  
-.removeBtn { margin-right: 10px; position: relative; top:0px; left:-1px; background: none; border: none; padding:0;}  
-.form { border:1px #ccc solid; box-shadow: 0 8px 15px rgba(0, 0, 0, .3); position: absolute; top:46px; left:0; width: 300px; z-index: 9; padding:20px; background-color: #fff; border-radius: 7px; display: none;}
 .form .form-group { position: relative;}
-.form .form-group .tickBtn { position: absolute; right:8px; top:6px; background: none; padding:0; border:none;}
-.form::before { content: ''; position: absolute; top: -10px; left: 7px; width: 20px; height: 20px; background: #fff;  transform: rotate(45deg); z-index: -1; }
-.active .form, .active .removeBtn { display: block;}
-.active .addBtn { display: none;}
+
+
 .removeBtn { display: none;}
 
+.float-end { float: right;}
+
+.smallForm { display: none; width: 360px; z-index: 9;  background-color: #fff; border-radius: 7px; position: absolute; top:50px; right:5px; border:1px #ccc solid; box-shadow: 0 8px 15px rgba(0, 0, 0, .3); }
+.smallForm form { width: 90%; float: left;}
+.smallForm::before { content: ''; position: absolute; top: -11px; right: 25px; width: 20px; height: 20px; background: #fff;  transform: rotate(45deg); z-index: -1; border:1px #ccc solid; }
+.smallForm.active { display: block;}
+.smallForm .tickBtn { position: absolute; right:8px; top:6px; background: none; padding:0; border:none; }
+.active .smallForm, .active .removeBtn { display: block; position: absolute; right:15px; top:27px;}
 
 .checkbox-alias{  
   display: inline-block; border:1px #ccc solid; border-radius: 10px;;
@@ -238,11 +270,11 @@ cursor: pointer;
 .invisible-checkboxes input[type=checkbox]{ display: none;  }
 
 .invisible-checkboxes input[type=checkbox]:checked + .checkbox-alias{
-  background-color: #007bff; color:#fff; 
+  background-color: var(--primary-color); color:#fff; 
 }
 
 .invisible-checkboxes:has(input:checked) .checkbox-alias {
-  background-color: #007bff;
+  background-color: var(--primary-color);
 }
 
 
@@ -304,3 +336,7 @@ cursor: pointer;
 	margin: 8px auto;
 	padding: 16px;
 }
+
+.productPic:hover .editControl { display: block;}
+.editControl { position: absolute; background-color: rgba(0,0,0,0.5); width: 100%; height: 77%; text-align: center; padding:60px 0; display: none;}
+.editControl a { background-color: #fff; padding:2px 0 5px 5px; text-align: center; border-radius: 3px; margin: 0 3px;}

@@ -18,9 +18,7 @@
     <div class="container-fluid">
         @include('admin.layouts.message')
             <div class="card">
-                <div class="card-body">
-                    <form action="{{ route('configurations.update',$configuration->id) }}" method="post">
-                    @csrf
+                <div class="card-body">                    
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -34,8 +32,7 @@
                         <div class="col-md-2">
                             <button class="btn btn-primary mt-4">Update</button>    
                         </div>
-                    </div>
-                </form>
+                    </div>                
                 </div>
             </div>
         </div>
