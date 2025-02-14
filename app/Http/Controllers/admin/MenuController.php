@@ -8,8 +8,6 @@ use App\Models\Category;
 use App\Models\Menu;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
-use App\Models\TempImage;
-use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -43,75 +41,77 @@ class MenuController extends Controller
         return view('admin.menu.list', $data);      
     }
 
+    
     public function store(Request $request){
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',           
-        ]);
+        $validator = Validator::make($request->all(), [ 
+            'name' => 'required',
+            //'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+        ]);   
 
-        if ($validator->passes()) {
-            $menu = new Menu();
-            $menu->name = $request->name;
-            $menu->slug = $request->slug;
-            $menu->category_id = $request->category;
-            $menu->save();
+        if($validator->passes()){
+            $data = new Menu();
+            $data->name = $request->name;
+            $data->slug = $request->slug;
+            $data->category_id = $request->category;
 
-            // Save image here
-            if (!empty($request->image_id)) {
-                $tempImage = TempImage::find($request->image_id);
-                $extArray = explode('.',$tempImage->name);
-                $ext = last($extArray);
+            //Image upload
+            $file = $request->file('image');
+            $extenstion = $file->getClientOriginalExtension();
+            $fileName = $data->slug.'_'.time().'.'.$extenstion;
+            $path = public_path().'/uploads/menu/'.$fileName;
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+            $image->toJpeg(80)->save($path);
+            $image->cover(300,300)->save($path);
+            $data->image = $fileName;
+            $data->save();
 
-                $newImageName = $menu->id.'_'.$menu->name.'.'.$ext;                
-                $sPath = public_path().'/temp/'.$tempImage->name;
-                $dPath = public_path().'/uploads/menu/'.$newImageName;                
-                File::copy($sPath,$dPath);
-
-                //Generate thumbnail
-                $dPath = public_path().'/uploads/menu/thumb/'.$newImageName;
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($sPath);
-                $image->cover(300,300);
-                $image->save($dPath);
-                $image->save($dPath);                                  
-                $menu->image = $newImageName;
-                $menu->save();
-            }
-
-            $request->session()->flash('success', 'Menu added successfully');
-
-            return response([
-                'status' => true,
-                'message' => 'Menu added successfully',
-            ]);
-
+            return redirect()->route('categories.index')->with('success','Menu added successfully.');
         } else {
-            return response([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
+            return redirect()->route('categories.index')->withInput()->withErrors($validator);
         }
     }
 
 
     public function edit($id, Request $request){
+        $menu = Menu::find($id);
 
-        $subCategory = Menu::find($id);
-        if(empty($subCategory)){
-            $request->session()->flash('error','Record not found');
-            return redirect()->route('menu.index');
-        }
+        // if (empty($product)) {
+        //     return redirect()->route('products.index')->with('error','Product not found');
+        // }
 
+        //Fetch Product Images
+        // $subCategories = Menu::where('category_id',$product->category_id)->get();
         $categories = Category::orderBy('name','ASC')->get();
+
+        $data = [];
+        
         $data['categories'] = $categories;
-        $data['subCategory'] = $subCategory;
-        return view("admin.sub_category.edit", $data);
+        $data['menu'] = $menu;
+        //$data['subCategories'] = $subCategories;
+             
+        return view('admin.category.edit',$data);
     }
+
+
+    // public function edit($id, Request $request){
+    //     $subCategory = Menu::find($id);
+    //     if(empty($subCategory)){
+    //         $request->session()->flash('error','Record not found');
+    //         return redirect()->route('menu.index');
+    //     }
+
+    //     $categories = Category::orderBy('name','ASC')->get();
+    //     $data['categories'] = $categories;
+    //     $data['subCategory'] = $subCategory;
+    //     return view("admin.category.edit", $data);
+    // }
 
     public function update($id, Request $request){
 
-        $subCategory = SubCategory::find($id);
+        $data = Menu::find($id);
 
-        if(empty($subCategory)){
+        if(empty($data)){
             $request->session()->flash('error','Record not found');
             return response([
                 'status' => false,
@@ -121,33 +121,33 @@ class MenuController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'slug' => 'required|unique:sub_categories,slug,'.$subCategory->id.',id',
-            'category' => 'required',
-            'status' => 'required',
         ]);
 
         if ($validator->passes()) {
+            $data->name = $request->name;
+            $data->slug = $request->slug;
+            $data->category_id = $request->category;
+            $data->save();
 
-            $subCategory->name = $request->name;
-            $subCategory->slug = $request->slug;
-            $subCategory->status = $request->status;
-            $subCategory->showHome = $request->showHome;
-            $subCategory->category_id = $request->category;
-            $subCategory->save();
-
-            $request->session()->flash('success', 'Sub Category updated successfully');
-
-            return response([
-                'status' => true,
-                'message' => 'Sub Category updated successfully',
-            ]);
-
-        } else {
-            return response([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
+             //Image upload
+             if ($request->hasFile('image')) { 
+                $file = $request->file('image');
+                $extenstion = $file->getClientOriginalExtension();
+                $fileName = $data->slug.'_'.time().'.'.$extenstion;
+                $path = public_path().'/uploads/menu/'.$fileName;
+                $manager = new ImageManager(new Driver());
+                $image = $manager->read($file);
+                $image->toJpeg(80)->save($path);
+                $image->cover(300,300)->save($path);
+                $data->image = $fileName;
+             }
+             
+             $data->save();
+ 
+             return redirect()->route('categories.index')->with('success','Menu updated successfully.');
+         } else {
+             return redirect()->route('categories.index')->withInput()->withErrors($validator);
+         }
     }
     
 

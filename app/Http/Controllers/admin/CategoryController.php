@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
-use App\Models\TempImage;
+use App\Models\Menu;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManager;
@@ -56,7 +56,7 @@ class CategoryController extends Controller
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-                   
+            'name' => 'required',
         ]);
 
         if ($validator->passes()) {
@@ -64,28 +64,6 @@ class CategoryController extends Controller
             $category->name = $request->name;
             $category->slug = $request->slug;
             $category->save();
-
-            // Save image here
-            // if (!empty($request->image_id)) {
-            //     $tempImage = TempImage::find($request->image_id);
-            //     $extArray = explode('.',$tempImage->name);
-            //     $ext = last($extArray);
-
-            //     $newImageName = $category->id.'_'.$category->name.'.'.$ext;                
-            //     $sPath = public_path().'/temp/'.$tempImage->name;
-            //     $dPath = public_path().'/uploads/category/'.$newImageName;                
-            //     File::copy($sPath,$dPath);
-
-            //     //Generate thumbnail
-            //     $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
-            //     $manager = new ImageManager(new Driver());
-            //     $image = $manager->read($sPath);
-            //     $image->cover(400,300);
-            //     $image->save($dPath);
-            //     $image->save($dPath);                                  
-            //     $category->image = $newImageName;
-            //     $category->save();
-            // }
 
             $request->session()->flash('success', 'Category added successfully');
 
@@ -101,6 +79,84 @@ class CategoryController extends Controller
             ]);
         }
     }
+
+
+
+
+    public function store_menu(Request $request){
+        $validator = Validator::make($request->all(), [ 
+            'name' => 'required',
+            //'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+        ]);   
+
+        if($validator->passes()){
+            $data = new Menu();
+            $data->name = $request->name;
+            $data->slug = $request->slug;
+            $data->category_id = $request->category;
+
+            //Image upload
+            if ($request->hasFile('image')) { 
+                // $file = $request->file('image');
+                // $extenstion = $file->getClientOriginalExtension();
+                // $fileName = $data->name.'_'.time().'.'.$extenstion;
+                // $path = public_path().'/uploads/logo/'.$fileName;
+                // $manager = new ImageManager(new Driver());
+                // $image = $manager->read($file);
+                // $image->toJpeg(80)->save($path);
+                // $image->cover(300,300)->save($path);
+                // $data->image = $fileName;
+            }
+            
+            $data->save();
+
+            return redirect()->route('configurations.index')->with('success','Configurations added successfully.');
+        } else {
+            return redirect()->route('configurations.index')->withInput()->withErrors($validator);
+        }
+    }
+
+
+
+    // public function store_menu(Request $request){
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required',
+    //     ]);
+
+    //     if ($validator->passes()) {
+    //         $menu = new Menu();
+    //         $menu->name = $request->name;
+    //         $menu->slug = $request->slug;
+    //         $menu->category_id = $request->category;
+
+    //          //Image upload
+    //          $file = $request->file('image');
+    //          $extenstion = $file->getClientOriginalExtension();
+    //          $fileName = $menu->name.'_'.time().'.'.$extenstion;
+    //          $path = public_path().'/uploads/logo/'.$fileName;
+    //          $manager = new ImageManager(new Driver());
+    //          $image = $manager->read($file);
+    //          $image->toJpeg(80)->save($path);
+    //          $image->cover(300,300)->save($path);
+    //          $menu->image = $fileName;
+             
+    //         $menu->save();
+
+    //         $request->session()->flash('success', 'Menu added successfully');
+
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Category added successfully'
+    //         ]);
+
+    //     } else {
+    //         return response()->json([
+    //             'status' => false,
+    //             'errors' => $validator->errors()
+    //         ]);
+    //     }
+    // }
+
 
 
 

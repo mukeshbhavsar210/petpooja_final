@@ -17,14 +17,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('categories.index') }}" class="nav-link {{ (\Request::route()->getName() == 'categories.index') ? 'active' : '' }}">
+                    <a href="{{ route('categories.index') }}" class="nav-link {{ (\Request::route()->getName() == 'categories.index') || (\Request::route()->getName() == 'menu.edit') ? 'active' : '' }}">
                         <p>Menu</p>
                     </a>
                 </li>
                 @can('create menus')
                     <li class="nav-item">
-                        <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') ? 'active' : '' }}">
-                            <p>Menu Item</p>
+                        <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') || (\Request::route()->getName() == 'products.edit') ? 'active' : '' }}">
+                            <p>Products</p>
                         </a>
                     </li>
                 @endcan
@@ -44,30 +44,25 @@
                 @endcan
                 @can('create permissions')
                     <li class="nav-item">
-                        <a href="{{ route('permissions.index') }}" class="nav-link {{ (\Request::route()->getName() == 'permissions.index') ? 'active' : '' }}">
+                        <a href="{{ route('permissions.index') }}" class="nav-link {{ (\Request::route()->getName() == 'permissions.index') || (\Request::route()->getName() == 'permissions.edit') ? 'active' : '' }}">
                             <p>Permissions</p>
                         </a>
                     </li>  
                 @endcan
                 @can('create roles')
                     <li class="nav-item">
-                        <a href="{{ route('roles.index') }}" class="nav-link {{ (\Request::route()->getName() == 'roles.index') ? 'active' : '' }}">
+                        <a href="{{ route('roles.index') }}" class="nav-link {{ (\Request::route()->getName() == 'roles.index') || (\Request::route()->getName() == 'roles.edit') ? 'active' : '' }}">
                             <p>Roles</p>
                         </a>
                     </li> 
                 @endcan
+                @can('view configurations')
                 <li class="nav-item">
                     <a href="{{ route('configurations.index') }}" class="nav-link {{ (\Request::route()->getName() == 'configurations.index') ? 'active' : '' }}">
                         <p>Configuration</p>
                     </a>
                 </li>                  
-                @can('view settings')
-                    <li class="nav-item">
-                        <a href="{{ route('settings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'settings.index') ? 'active' : '' }}">
-                            <p>Settings</p>
-                        </a>
-                    </li>  
-                @endcan   
+                @endcan                    
                 @can('create users')
                     <li class="nav-item">
                         <a href="{{ route('users.index') }}" class="nav-link {{ (\Request::route()->getName() == 'users.index') ? 'active' : '' }}">

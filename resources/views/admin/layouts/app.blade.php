@@ -22,7 +22,7 @@
 if (getTheme()->isNotEmpty()) {
 	$primaryColor = getTheme()->pluck('primary_color')->implode('');
 	$secondaryColor = getTheme()->pluck('secondary_color')->implode('');
-	$sidebarColor = getTheme()->pluck('sidebar')->implode('');	
+	$sidebarColor = getTheme()->pluck('sidebar_color')->implode('');	
 } else {
 	$primaryColor = "#007bff";
 	$secondaryColor = "#007bff";
@@ -220,23 +220,15 @@ if (getTheme()->isNotEmpty()) {
 		});
 
 		$(document).ready(function(){
-			$(".summernote").summernote({
-				//height:250;
-			});
-
 			$('.addBtn').click(function() {
-				$(this).parent().addClass('active');
+				$('.smallForm').addClass('active');
 			});
 			$('.removeBtn').click(function() {
-				$(this).parent().removeClass('active');
+				$('.smallForm').removeClass('active');
 			});
 
 			$('.nav-tabs').find('.nav-link:first').addClass('active');
 			$('.tab-content').find('.tab-pane:first').addClass('active');
-
-			// $(":checkbox").change(function () {
-			// 	$(this).parent().toggleClass('selected');
-			// });
 		})
 
 		//Alert timeout

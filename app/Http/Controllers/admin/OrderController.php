@@ -15,9 +15,36 @@ class OrderController extends Controller
 {
     public function index(Request $request){
         $orderItems = OrderItem::latest('order_items.created_at')->with('orders')->get();
+
+        $orderCount = DB::table('orders')
+                    ->select(DB::raw('count(*) as count'))
+                    ->get()[0]->count;
+
+        $dineinCount = DB::table('orders')
+                    ->where('order_type', 'Dinein')
+                    ->select(DB::raw('count(*) as count'))
+                    ->get()[0]->count;
+
+        $takeawayCount = DB::table('orders')
+                    ->where('order_type', 'Takeaway')
+                    ->select(DB::raw('count(*) as count'))
+                    ->get()[0]->count;
+
+        $deliveryCount = DB::table('orders')
+                    ->where('order_type', 'Delivery')
+                    ->select(DB::raw('count(*) as count'))
+                    ->get()[0]->count;
+
         $data = [
             'orderItems' => $orderItems,
+            'orderCount' => $orderCount,
+            'dineinCount' => $dineinCount,
+            'takeawayCount' => $takeawayCount,
+            'deliveryCount' => $deliveryCount
         ];
+
+        //dd($dineinCount);
+
         //$orders = $orders->paginate(10);
         return view('admin.orders.list', $data);
     }

@@ -3,23 +3,32 @@
         @if ($configurations->count())
             <div class="row">
                 <div class="col-md-2">
-                    <img style="width: 150px;" src="{{ asset('uploads/logo/'.$configurations->pluck('image')->implode('')) }}" />
+                    <img style="width:100%;" src="{{ asset('uploads/logo/'.$configurations->pluck('image')->implode('')) }}" />
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <h4>{{ $configurations->pluck('name')->implode('') }}</h4>
                     <p>Address: {{ $configurations->pluck('address')->implode('') }}<br />
                     Email: {{ $configurations->pluck('email')->implode('') }}<br />
                     Mobile: {{ $configurations->pluck('phone')->implode('') }}</p>
-                    <a href="{{ route("configurations.update") }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ route('configurations.edit', $configurations->pluck('id')->implode('') ) }}" class="btn btn-primary">Edit</a>
                 </div>
-                <div class="col-md-2">
-                    <p>Applied Theme</p>
-                    <div class="flex-wrapper">
-                        <div class="theme">
-                            <div class="theme-primary" style="background-color: {{ $configurations->pluck('primary_color')->implode('') }}"></div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Applied Theme</h6>
                         </div>
-                        <div class="theme">
-                            <div class="theme-primary" style="background-color: {{ $configurations->pluck('secondary_color')->implode('') }}"></div>
+                        <div class="card-body">
+                            <div class="flex-wrapper">
+                                <div class="theme">
+                                    <div class="theme-primary" style="background-color: {{ $configurations->pluck('primary_color')->implode('') }}"></div>
+                                </div>
+                                <div class="theme">
+                                    <div class="theme-primary" style="background-color: {{ $configurations->pluck('secondary_color')->implode('') }}"></div>
+                                </div>
+                                <div class="theme">
+                                    <div class="theme-primary" style="background-color: {{ $configurations->pluck('sidebar_color')->implode('') }}"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -36,7 +45,7 @@
                                         <label>Name</label>
                                         <input name="name" type="text" class="form-control" placeholder="Restaurant Name" value="{{ old('name') }}" />
                                         @error('name')
-                                            <p class="text-red-400 font-small">{{ $message }}</p>
+                                            <p class="alert alert-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -58,20 +67,29 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Primary Color</label>
-                                        <input name="primary_color" placeholder="theme" type="color" class="form-control" value="{{ old('primary_color') }}" />
+                                        <label>Primary</label>
+                                        <input name="primary_color" type="color" class="form-control" value="{{ old('primary_color') }}" />
                                         @error('primary_color')
                                             <p class="text-red-400 font-small">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Secondary Color</label>
-                                        <input name="secondary_color" placeholder="theme" type="color" class="form-control" value="{{ old('secondary_color') }}" />
+                                        <label>Secondary</label>
+                                        <input name="secondary_color" type="color" class="form-control" value="{{ old('secondary_color') }}" />
                                         @error('secondary_color')
+                                            <p class="text-red-400 font-small">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Sidebar</label>
+                                        <input name="sidebar_color" type="color" class="form-control" value="{{ old('sidebar_color') }}" />
+                                        @error('sidebar_color')
                                             <p class="text-red-400 font-small">{{ $message }}</p>
                                         @enderror
                                     </div>

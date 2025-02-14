@@ -71,16 +71,19 @@
                                 </div>
                             </div>
 
-                            <p><b>Select Role</b></p>
-                            <div class="row">                                
-                                @if($roles->isNotEmpty())
-                                    @foreach ($roles as $value)
-                                        <div class="col-md-6">                                            
-                                            <input type="checkbox" id="role-{{ $value->id }}" class="rounded" name="role[]" value="{{ $value->name }}" />
-                                            <label for="role-{{ $value->id }}">{{ $value->name }}</label>
-                                        </div>        
-                                    @endforeach
-                                @endif
+                            <div class="checkboxSelect">
+                                <div class="form-group">
+                                    <label>Select Role</label>
+                                </div>
+                                <div class="btn-group" name="area_name" id="options" data-toggle="buttons">
+                                    @if($roles->isNotEmpty())
+                                        @foreach ($roles as $value)
+                                            <label class="btn btn-default" for="role_{{ $value->id }}">{{ $value->name }}
+                                                <input type="checkbox" name="role[]" id="role_{{ $value->id }}" class="btn-check" value="{{ $value->name }}">
+                                            </label>
+                                        @endforeach
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">

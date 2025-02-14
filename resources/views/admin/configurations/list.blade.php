@@ -49,7 +49,48 @@
         <div class="tab-pane" id="tabs-2" role="tabpanel">
             <div class="card">
                 <div class="card-body">
-                    2
+                    <div class="row">
+                        <div class="col-md-8 col-12">
+                            <h4>Restaurant branches</h4>
+                            <div class="row">
+                                @if($branches->isNotEmpty())
+                                    @foreach ($branches as $value)
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <b>{{ $value->area_name }}</b>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p>Tables: {{ $value->seat->count() }}</p>
+                                                    <a href="{{ route('areas.index') }}" class="outlineBtn btn-secondary mt-1">Add Table</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12">
+                            <div class="card">
+                                <div class="card-header pb-2">
+                                    <h5>Create branch</h5>
+                                </div>
+                                <div class="card-body">                                    
+                                    <form action="{{ route('areas.store') }}" method="post">
+                                        @csrf
+                                        <div class="form-group">
+                                            <input type="text" name="area_name" id="area_name" class="form-control" placeholder="Name">
+                                            <input type="hidden" name="area_slug" id="area_slug" class="form-control" placeholder="Name">
+                                            @error('area_name')
+                                                <p class="text-red-400 font-small">Enter New Restaurant</p>
+                                            @enderror
+                                        </div>                                        
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>                           
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,29 +144,22 @@
         
 @section('customJs')
 <script type="text/javascript">
-    Dropzone.autoDiscover = false;
-        const dropzone = $("#image").dropzone({
-            init: function() {
-                this.on('addedfile', function(file) {
-                    if (this.files.length > 1) {
-                        this.removeFile(this.files[0]);
-                    }
-                });
-            },
-            url:  "{{ route('temp-images.create') }}",
-            maxFiles: 1,
-            paramName: 'image',
-            addRemoveLinks: true,
-            acceptedFiles: "image/jpeg,image/png,image/gif",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }, success: function(file, response){
-                $("#image_id").val(response.image_id);
-                console.log(response)
+    $('#area_name').change(function(){
+        element = $(this);
+        $("button[type=submit]").prop('disabled', true);
+        $.ajax({
+            url: '{{ route("getSlug") }}',
+            type: 'get',
+            data: {title: element.val()},
+            dataType: 'json',
+            success: function(response){
+                $("button[type=submit]").prop('disabled', false);
+                if(response["status"] == true){
+                    $("#area_slug").val(response["slug"]);
+                }
             }
         });
-
-
+    })
 
     function deletePermission(id) {
         if (confirm("Are you sure you want to delete?")) {
@@ -138,11 +172,10 @@
                     'x-csrf-token' : '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    window.location.href="{{ route('permissions.index') }}"
+                    window.location.href="{{ route('configurations.index') }}"
                 }
             });
         }
     }
-
 </script>
 @endsection

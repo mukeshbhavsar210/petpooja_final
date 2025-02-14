@@ -59,13 +59,14 @@ Route::middleware('auth')->group(function () {
     //Category Routes
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');        
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    Route::post('/category_menu', [CategoryController::class, 'store_menu'])->name('categories.store_menu');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
 
     //Sub Category Routes
     Route::get('/menus', [MenuController::class, 'index'])->name('menu.index');        
     Route::post('/menus', [MenuController::class, 'store'])->name('menu.store');
-    Route::get('/menus/{menu}/edit', [MenuController::class, 'edit'])->name('menu.edit');
-    Route::put('/menus/{menu}', [MenuController::class, 'update'])->name('menu.update');
+    Route::get('/menus/{id}/edit', [MenuController::class, 'edit'])->name('menu.edit');
+    Route::post('/menus/{id}', [MenuController::class, 'update'])->name('menu.update');
     Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menu.delete');
 
      //Product Route
@@ -73,8 +74,8 @@ Route::middleware('auth')->group(function () {
      Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
      Route::post('/products', [ProductController::class, 'store'])->name('products.store');
      Route::post('/product_view', [ProductController::class, 'view_store'])->name('products.store');
-     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+     Route::post('/products/{id}', [ProductController::class, 'update'])->name('products.update');
      Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
      Route::get('/get-products',[ProductController::class,'getProducts'])->name('products.getProducts');
 
@@ -152,8 +153,7 @@ Route::middleware('auth')->group(function () {
     //Views
     //Route::post('/views/{id}', [FrontController::class, 'store_views'])->name('views.store');
 
-    //Roles
-    Route::resource('/roles', 'RoleController');
+    //Roles    
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
@@ -165,9 +165,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configurations.index');
     Route::get('/configurations/create', [ConfigurationController::class, 'create'])->name('configurations.create');
     Route::post('/configurations', [ConfigurationController::class, 'store'])->name('configurations.store');
-    //Route::get('/configurations/update', [ConfigurationController::class, 'edit'])->name('configurations.edit');
-    Route::post('/configurations/update', [ConfigurationController::class, 'update'])->name('configurations.update');
-    Route::delete('/configurations', [ConfigurationController::class, 'destroy'])->name('configurations.destroy');
+    Route::get('/configurations/{id}/edit', [ConfigurationController::class, 'edit'])->name('configurations.edit');
+    Route::post('/configurations/{id}', [ConfigurationController::class, 'update'])->name('configurations.update');
+    Route::delete('/configurations', [ConfigurationController::class, 'destroy'])->name('configurations.destroy');    
     
     //Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
