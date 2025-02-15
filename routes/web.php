@@ -19,7 +19,6 @@ use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\TempImagesController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
@@ -33,19 +32,20 @@ Route::post('order',[FrontController::class, 'order_store'])->name('submit.order
 
 //add to cart
 Route::get('cart', [FrontController::class, 'showCartTable']);
-Route::get('add-to-cart/{id}', [FrontController::class, 'addToCart']);
+Route::get('add-to-cart/{id}', [FrontController::class, 'addToCart'])->name('front.addCart');
 Route::delete('remove-from-cart', [FrontController::class, 'removeCartItem']);
 Route::get('clear-cart', [FrontController::class, 'clearCart']);
 
 //add to wishlist
 Route::get('favorites',[FrontController::class,'wishlist'])->name('front.wishlist');
-Route::get('add-to-wishlist/{id}', [FrontController::class, 'addToWish']);
+Route::get('add-to-wishlist/{id}', [FrontController::class, 'addToWish'])->name('addwishlist');
 Route::delete('remove-from-wishlist', [FrontController::class, 'removeWishlistItem']);
-Route::get('clear-wishlist', [FrontController::class, 'clearWishlist']);
+Route::get('clear-wishlist', [FrontController::class, 'clearWishlist'])->name('clear_wishlist');
 
 //Front pages routes
 //Route::get('/', [UserController::class, 'show'])->name('front.home');
 Route::get('/', [FrontController::class, 'show'])->name('front.home');
+//Route::get('/menu/{categorySlug?}',[ShopController::class,'category'])->name('front.category');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
 Route::get('area/{areaSlug?}',[FrontController::class,'restaurant'])->name('front.restaurant');
 
@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/menus/{id}/edit', [MenuController::class, 'edit'])->name('menu.edit');
     Route::post('/menus/{id}', [MenuController::class, 'update'])->name('menu.update');
     Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menu.delete');
+    Route::delete('/selected-menus', [MenuController::class, 'deleteAll'])->name('menuall.delete');
 
      //Product Route
      Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -76,15 +77,11 @@ Route::middleware('auth')->group(function () {
      Route::post('/product_view', [ProductController::class, 'view_store'])->name('products.store');
      Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
      Route::post('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
+     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.delete');
      Route::get('/get-products',[ProductController::class,'getProducts'])->name('products.getProducts');
 
      //Sub Categories Connect to main Categories
      Route::get('/product-subcategories', [ProductSubCategoryController::class, 'index'])->name('product-subcategories.index');
-     
-     //Delete Product Images Route
-     Route::post('/product-images/update', [ProductImageController::class, 'update'])->name('product-images.update');
-     Route::delete('/product-images', [ProductImageController::class, 'destroy'])->name('product-images.destroy');
 
      //Areas Routes
      Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');        
@@ -168,6 +165,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/configurations/{id}/edit', [ConfigurationController::class, 'edit'])->name('configurations.edit');
     Route::post('/configurations/{id}', [ConfigurationController::class, 'update'])->name('configurations.update');
     Route::delete('/configurations', [ConfigurationController::class, 'destroy'])->name('configurations.destroy');    
+    Route::post('/payment', [ConfigurationController::class, 'store_payment'])->name('payment.store');
     
     //Users
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

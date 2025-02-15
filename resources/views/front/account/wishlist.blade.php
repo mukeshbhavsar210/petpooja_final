@@ -37,8 +37,8 @@
                                     @endphp
 
                                     <a class="d-block flex-shrink-0 mx-auto me-sm-4" style="width: 10rem;" href="{{ route('front.product',$wishlist->product->slug) }}">
-                                        @if (!empty($productImage))
-                                            <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                        @if (!empty($value))
+                                            <img src="{{ asset('uploads/product/'.$value->image) }}" >
                                         @else
                                             <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                         @endif

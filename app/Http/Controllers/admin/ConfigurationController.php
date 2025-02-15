@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Configuration;
 use App\Models\Menu;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -32,11 +33,13 @@ class ConfigurationController extends Controller implements HasMiddleware
 
     public function index(){
         $configurations = Configuration::get();
+        $payments = Payment::get();        
         $branches = Area::get();
 
         return view("admin.configurations.list", [
             'configurations' => $configurations,
             'branches' => $branches,
+            'payments' => $payments,
         ]);
     }
 
@@ -123,6 +126,24 @@ class ConfigurationController extends Controller implements HasMiddleware
                 'status' => false,
                 'errors' => $validator->errors()
             ]);
+        }
+    }
+
+
+    public function store_payment(Request $request){
+        $validator = Validator::make($request->all(), [
+            'your_key_id' => 'required',
+        ]);
+
+        if ($validator->passes()) {
+            $payment = new Payment();
+            $payment->your_key_id = $request->your_key_id;
+            $payment->your_key_secret = $request->your_key_secret;
+            $payment->save();
+
+            return redirect()->route('configurations.index')->with('success','Payment Gateway added successfully.');
+        } else {
+            return redirect()->route('configurations.index')->withInput()->withErrors($validator);
         }
     }
 

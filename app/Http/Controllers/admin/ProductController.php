@@ -176,6 +176,8 @@ class ProductController extends Controller {
         }
     }
 
+
+
     public function destroy($id, Request $request){
         $product = Product::find($id);
 
@@ -186,19 +188,10 @@ class ProductController extends Controller {
                 'notFound' => true,
             ]);
         }
+
+        File::delete(public_path('uploads/product/'.$product->image));
+
         $product->delete();
-        $productImages = ProductImage::where('product_id',$id)->get();
-
-        if (!empty($productImages)) {
-            foreach ($productImages as $productImage) {
-                File::delete(public_path('uploads/product/large/'.$productImage->image));
-                File::delete(public_path('uploads/product/small/'.$productImage->image));
-            }
-
-            ProductImage::where('product_id',$id)->delete();
-        }
-
-        
 
         $request->session()->flash('success','Product deleted successfully');
 

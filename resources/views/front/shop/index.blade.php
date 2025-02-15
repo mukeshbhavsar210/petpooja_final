@@ -2,28 +2,26 @@
 
 @section('content')
     <div class="product-card">
-        {{-- <div class="col-md-3 sidebar">
-            <div class="sub-title mt-5"><h2>Price</h3></div>                    
-            <div class="card">
-                <div class="card-body">
-                    <input type="text" class="js-range-slider" name="my_range" value="" />
-                </div>
-            </div>                                        
-        </div> --}}
-
         <div class="row">
+            {{-- <section class="subcategories-section">
+                <div class="subcategories-section__item no-wrap no-user-select subcategories-section__item--active">All</div>
+                @if (getProducts()->isNotEmpty())
+                    @foreach (getProducts() as $value )	
+                        <div class="subcategories-section__item text-overflow" style="opacity: 1; transform: translateX(0px);">
+                            <a href="{{ route('front.menu',[$value->slug])}}" class="no-user-select">{{ $value->name }}</a>
+                        </div>
+                    @endforeach
+                @endif
+            </section> --}}
+
             @if ($products->isNotEmpty())
                 @foreach ($products as $value)
-                    @php
-                        $productImage = $value->product_images->first();
-                    @endphp
-        
                     <div class="col-6 mb-3">
                         <div class="card ">
                             <div class="product-image position-relative">
                                 <a href="" data-bs-toggle="modal" data-bs-target="#{{ $value->slug }}" class="product-img">
-                                    @if (!empty($productImage->image))
-                                        <img class="card-img-top" src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                    @if (!empty($value->image))
+                                        <img class="card-img-top" src="{{ asset('uploads/product/'.$value->image) }}" >
                                     @else
                                         <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                     @endif
@@ -38,8 +36,8 @@
                                     <div class="modal-content">
                                         <div class="menuContainer">
                                             <div class="product-pic">
-                                                @if (!empty($productImage->image))
-                                                    <img class="card-img-top" src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                                @if (!empty($value->image))
+                                                    <img class="card-img-top" src="{{ asset('uploads/product/'.$value->image) }}" >
                                                 @else
                                                     <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                                 @endif

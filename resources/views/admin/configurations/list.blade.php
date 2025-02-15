@@ -17,7 +17,7 @@
 
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Restaurant Information</a>
+            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Information</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Branch</a>
@@ -35,7 +35,7 @@
             <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Your Plan</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">About us</a>
+            <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Payment Gateway</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#tabs-8" role="tab">Customer Website</a>
@@ -126,7 +126,33 @@
         <div class="tab-pane" id="tabs-7" role="tabpanel">
             <div class="card">
                 <div class="card-body">
-                    <h1>Customer Website</h1>
+                    <div class="col-md-5 col-12">
+                        <h5>Payment Gateway</h5><br />
+                        @if ($payments->count())
+                            <p>Your Key ID: {{ $payments->pluck('your_key_id')->implode('') }}<br />
+                            Your Key ID: {{ $payments->pluck('your_key_secret')->implode('') }}</p>
+                        @else
+                            <form action="{{ route('payment.store') }}" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <label>Your Key ID</label>
+                                    <input type="text" name="your_key_id" id="your_key_id" class="form-control" placeholder="Your Key ID" >
+                                    @error('your_key_id')
+                                        <p class="text-red-400 font-small">Key ID</p>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label>Your Key Secret</label>
+                                    <input type="text" name="your_key_secret" id="your_key_secret" class="form-control" placeholder="Your Key ID">
+                                    @error('your_key_secret')
+                                        <p class="text-red-400 font-small">Secret Key</p>
+                                    @enderror
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form> 
+                        @endif
+                                                   
+                    </div>
                 </div>
             </div>                
         </div>

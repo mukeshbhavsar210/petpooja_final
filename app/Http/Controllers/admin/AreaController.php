@@ -33,7 +33,7 @@ class AreaController extends Controller {
                     ->get()[0]->number;
 
         //$seatings = $seatings->paginate(10);
-      
+
         $data['areas'] = $areas;
         $data['seats'] = $seats;
         $data['tableIndividual'] = $tableIndividual;

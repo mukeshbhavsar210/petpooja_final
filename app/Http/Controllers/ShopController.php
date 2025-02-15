@@ -58,9 +58,28 @@ class ShopController extends Controller
         return view('front.shop.index',$data);
     }
 
+    public function category(Request $request, $categorySlug = null) {       
+        $categorySelected = ' ';
+
+        $categories = Category::orderBy("name","ASC")->with('menus')->get();        
+        $products = Product::where('status',1);
+
+        if(!empty($categorySlug)) {
+            $menus = Category::where('slug',$categorySlug)->first();
+            $products = $products->where('category_id',$menus->id);
+            $categorySelected = $menus->id;
+        }
+
+        $data['categories'] = $categories;
+        $data['products'] = $products;        
+        $data['categorySelected'] = $categorySelected;
+        
+        return view('front.shop.index',$data);
+    }
+
 
     public function product($slug){
-        $product = Product::where('slug',$slug)->with('product_images')->first();
+        $product = Product::where('slug',$slug)->first();
 
         if($product == null){
             abort(404);
@@ -70,7 +89,7 @@ class ShopController extends Controller
         // $relatedProducts = [];
         // if ($product->related_products != '') {
         //     $productArray = explode(',',$product->related_products);
-        //     $relatedProducts = Product::whereIn('id',$productArray)->where('status',1)->with('product_images')->get();
+        
         // }
 
         $data['product'] = $product;

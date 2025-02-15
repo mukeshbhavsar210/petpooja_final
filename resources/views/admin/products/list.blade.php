@@ -219,7 +219,6 @@
                                         </svg>
                                     </a>
                                 </div>  
-
                                     @if (!empty($value->image))
                                         <img src="{{ asset('uploads/product/'.$value->image) }}" style="border-radius: 5px; width:100%;" >
                                     @else
@@ -249,6 +248,28 @@
 
 @section('customJs')
 <script>
+
+function deleteProduct(id){
+        var url = '{{ route("products.delete","ID") }}'
+        var newUrl = url.replace("ID",id)
+
+        if(confirm("Are you sure you want to delete?")){
+            $.ajax({
+                url: newUrl,
+                type: 'delete',
+                data: {},
+                dataType: 'json',
+                success: function(response){
+                    if(response["status"]){
+                        window.location.href="{{ route('products.index') }}"
+                    } else {
+                        window.location.href="{{ route('products.index') }}"
+                    }
+                }
+            });
+        }
+    }
+
     $('#name').change(function(){
         element = $(this);
         $("button[type=submit]").prop('disabled', true);

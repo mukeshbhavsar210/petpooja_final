@@ -6,16 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    public function product_images(){
-        return $this->hasMany(ProductImage::class);
-    }
-
     public function seat(){
         return $this->hasMany(Seat::class);
-    }
-
-    public function image(){
-        return $this->belongsTo(ProductImage::class);
     }
 
     public function category(){

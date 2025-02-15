@@ -15,9 +15,5 @@ class Category extends Model
 
     public function menus(){
         return $this->hasMany(Menu::class);
-    }
-
-    public function product_images(){
-        return $this->hasMany(ProductImage::class);
-    }
+    }   
 }

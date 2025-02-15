@@ -138,7 +138,7 @@ class UserController extends Controller implements HasMiddleware
 
 
     public function show(){
-        $products = Product::with('product_images')->orderBy('id','DESC')->get();
+        $products = Product::orderBy('id','DESC')->get();
         $areas = Area::orderBy('id','DESC')->with('seat')->orderBy('id','DESC')->get();
         $seats = Seat::orderBy('id','DESC')->get();        
       

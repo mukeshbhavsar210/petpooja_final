@@ -7,10 +7,6 @@
         <div class="menu-grid">
             @if(!empty($products))
                 @foreach($products as $value)
-                    @php
-                        $productImage = $value->product_images->first();
-                    @endphp  
-        
                     <div class="product-home">
                         <div class="product-image">
                             <a onclick="addToWishlist({{ $value->id }})" class="whishlist" href="javascript:void(0)">
@@ -19,8 +15,8 @@
                             </a>
         
                             <a href="javascript:void(0);" class="mainPic" data-toggle="modal" data-target="#{{ $value->id }}" >
-                                @if (!empty($productImage->image))
-                                    <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                @if (!empty($value->image))
+                                    <img src="{{ asset('uploads/product/'.$value->image) }}" >
                                 @else
                                     <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                 @endif
@@ -50,8 +46,8 @@
                             <div class="modal-content">
                                 <div class="menuContainer">
                                     <div class="product-pic">
-                                        @if (!empty($productImage->image))
-                                            <img class="card-img-top" src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                        @if (!empty($value->image))
+                                            <img class="card-img-top" src="{{ asset('uploads/product/'.$value->image) }}" >
                                         @else
                                             <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                         @endif

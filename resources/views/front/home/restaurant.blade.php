@@ -7,9 +7,7 @@
         <div class="menu-grid">
             @if(!empty($products))
                 @foreach($products as $value)
-                    @php
-                        $productImage = $value->product_images->first();
-                    @endphp  
+                   
 
                     <a href="javascript:void(0);" >
                         <div class="menu-product">
@@ -24,11 +22,7 @@
                                     </button>
                                 </div>
                                 <div class="menu-product__item__img">
-                                    @if (!empty($product_image->image))
-                                        <img src="{{ asset('uploads/product/small/'.$product_image->image) }}" >
-                                    @else
-                                        <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
-                                    @endif
+                                   
                                 </div>
 
                                 <div class="menu-product__item__top-block">
@@ -72,8 +66,8 @@
                             <div class="modal-content">
                                 <div class="menuContainer">
                                     <div class="product-pic">
-                                        @if (!empty($productImage->image))
-                                            <img class="card-img-top" src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                        @if (!empty($value->image))
+                                            <img class="card-img-top" src="{{ asset('uploads/product/'.$value->image) }}" >
                                         @else
                                             <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                         @endif
