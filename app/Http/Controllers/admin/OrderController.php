@@ -51,10 +51,10 @@ class OrderController extends Controller
 
     public function detail($orderId){
         $order = Order::with('seat')->findOrFail($orderId);
-        $products = Product::latest('id')->with('product_images');
-        $orderItems = OrderItem::where('order_id',$orderId)->get();
+        $orderItems = OrderItem::where('order_id',$orderId)->get();  
+        $products = Product::latest('id');      
 
-        //dd($taxes);
+        //dd($order);
         
         return view('admin.orders.detail',[
             'order' => $order,

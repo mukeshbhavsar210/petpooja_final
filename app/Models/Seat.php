@@ -18,7 +18,7 @@ class Seat extends Model
     }
 
     public function order(){
-        return $this->belongsTo(Order::class, 'id');
+        return $this->belongsTo(Order::class, 'status');
     }
 
     public function assigned_seat(){
@@ -34,9 +34,7 @@ class Seat extends Model
     //     return $this->belongsTo(Order::class, 'seat_id', );
     // }
 
-    public function product_images(){
-        return $this->hasMany(ProductImage::class);
-    }
+    
 
     public function category(){
         return $this->belongsTo(Category::class);

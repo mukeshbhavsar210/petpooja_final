@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Menu;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -45,7 +46,6 @@ class MenuController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
-            //'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
         ]);   
 
         if($validator->passes()){
@@ -53,17 +53,6 @@ class MenuController extends Controller
             $data->name = $request->name;
             $data->slug = $request->slug;
             $data->category_id = $request->category;
-
-            //Image upload
-            $file = $request->file('image');
-            $extenstion = $file->getClientOriginalExtension();
-            $fileName = $data->slug.'_'.time().'.'.$extenstion;
-            $path = public_path().'/uploads/menu/'.$fileName;
-            $manager = new ImageManager(new Driver());
-            $image = $manager->read($file);
-            $image->toJpeg(80)->save($path);
-            $image->cover(300,300)->save($path);
-            $data->image = $fileName;
             $data->save();
 
             return redirect()->route('categories.index')->with('success','Menu added successfully.');
@@ -127,7 +116,8 @@ class MenuController extends Controller
             $data->name = $request->name;
             $data->slug = $request->slug;
             $data->category_id = $request->category;
-            $data->save();
+
+            $oldImage = $data->image;
 
              //Image upload
              if ($request->hasFile('image')) { 
@@ -141,20 +131,28 @@ class MenuController extends Controller
                 $image->cover(300,300)->save($path);
                 $data->image = $fileName;
              }
-             
              $data->save();
+
+            File::delete(public_path().'/uploads/menu/'.$oldImage);            
  
              return redirect()->route('categories.index')->with('success','Menu updated successfully.');
          } else {
              return redirect()->route('categories.index')->withInput()->withErrors($validator);
          }
     }
+
+    public function deleteAll(Request $request){
+        $ids = $request->ids;
+        Menu::whereIn('id',$ids)->delete();
+
+        return response()->json(["success"=> "Menu deleted"]);        
+    }
     
 
     public function destroy($id, Request $request){
-        $subCategory = Menu::find($id);
+        $menu = Menu::find($id);
 
-        if(empty($subCategory)){
+        if(empty($menu)){
             $request->session()->flash('error','Record not found');
             return response([
                 'status' => false,
@@ -162,9 +160,9 @@ class MenuController extends Controller
             ]);
         }
 
-        $subCategory->delete();
+        $menu->delete();
 
-        $request->session()->flash('success', 'Sub Category deleted successfully');
+        $request->session()->flash('success', 'Menu deleted successfully');
 
         return response([
             'status' => true,

@@ -60,24 +60,26 @@ class CategoryController extends Controller
         ]);
 
         if ($validator->passes()) {
-            $category = new Category();
-            $category->name = $request->name;
-            $category->slug = $request->slug;
-            $category->save();
+            $data = new Category();
+            $data->name = $request->name;
+            $data->slug = $request->slug;
 
-            $request->session()->flash('success', 'Category added successfully');
+            //Image upload
+            $file = $request->file('image');
+            $extenstion = $file->getClientOriginalExtension();
+            $fileName = $data->slug.'_'.time().'.'.$extenstion;
+            $path = public_path().'/uploads/category/'.$fileName;
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+            $image->toJpeg(80)->save($path);
+            $image->cover(300,300)->save($path);
+            $data->image = $fileName;
+            $data->save();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Category added successfully'
-            ]);
-
+            return redirect()->route('categories.index')->with('success','Menu added successfully.');
         } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
+            return redirect()->route('categories.index')->withInput()->withErrors($validator);
+        }            
     }
 
 
@@ -115,49 +117,6 @@ class CategoryController extends Controller
             return redirect()->route('configurations.index')->withInput()->withErrors($validator);
         }
     }
-
-
-
-    // public function store_menu(Request $request){
-    //     $validator = Validator::make($request->all(), [
-    //         'name' => 'required',
-    //     ]);
-
-    //     if ($validator->passes()) {
-    //         $menu = new Menu();
-    //         $menu->name = $request->name;
-    //         $menu->slug = $request->slug;
-    //         $menu->category_id = $request->category;
-
-    //          //Image upload
-    //          $file = $request->file('image');
-    //          $extenstion = $file->getClientOriginalExtension();
-    //          $fileName = $menu->name.'_'.time().'.'.$extenstion;
-    //          $path = public_path().'/uploads/logo/'.$fileName;
-    //          $manager = new ImageManager(new Driver());
-    //          $image = $manager->read($file);
-    //          $image->toJpeg(80)->save($path);
-    //          $image->cover(300,300)->save($path);
-    //          $menu->image = $fileName;
-             
-    //         $menu->save();
-
-    //         $request->session()->flash('success', 'Menu added successfully');
-
-    //         return response()->json([
-    //             'status' => true,
-    //             'message' => 'Category added successfully'
-    //         ]);
-
-    //     } else {
-    //         return response()->json([
-    //             'status' => false,
-    //             'errors' => $validator->errors()
-    //         ]);
-    //     }
-    // }
-
-
 
 
     public function edit($categoryId, Request $request){

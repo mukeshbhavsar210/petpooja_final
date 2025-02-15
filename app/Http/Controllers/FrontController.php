@@ -10,46 +10,35 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\ProductImage;
 use App\Models\Seat;
-use App\Models\Seating;
-use App\Models\View;
 use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller {
     public function show() {
-        $products = Product::with('product_images')->orderBy('id','DESC')->get();
+        $products = Product::orderBy('id','DESC')->get();
         $areas = Area::orderBy('id','DESC')->with('seat')->orderBy('id','DESC')->get();
         $seats = Seat::orderBy('id','DESC')->get();        
       
-        //$cartCount = (count(Session::get('cart', array())));
-
         $data = [
             'products'=> $products,
             'areas'=> $areas,
             'seats'=> $seats,
         ];
 
-        //dd($seats);
-
         return view('front.home.index', $data);        
     }
 
-
-    // public function store_views(Request $request){
-    //     View::create([ 'view' => $request->view ]);
-    //     return redirect()->route('products.index')->with('success','View changed.');
-    // }
-
-
+    //Wishlist page
     public function wishlist() {
-        $products = Product::with('product_images')->orderBy('id','DESC')->get();        
+        $products = Product::orderBy('id','DESC')->get();        
         $data = [
             'products'=> $products,            
         ];
         return view('front.home.wishlist', $data);        
     }
 
+
+    //Slug
     public function index(Request $request, $areaSlug = null,) {
         $areaSlug = ' ';
 
@@ -73,6 +62,8 @@ class FrontController extends Controller {
         return view('front.shop.index',$data);
     }
 
+
+    //Area Slug
     public function restaurant(Request $request, $areaSlug = null) {       
         $areaSelected = ' ';
 
@@ -93,17 +84,13 @@ class FrontController extends Controller {
         $data['areas'] = $areas;        
         $data['areaSelected'] = $areaSelected;
         
-        //dd($seatings);
-
         return view('front.home.restaurant',$data);
     }
+    
 
-
+    //Add to Cart
     public function addToCart($id){
-        $product = Product::with('product_images')->find($id);
-        
-
-        //dd($product->seat->toArray());
+        $product = Product::find($id);
 
         if (!$product) {
             abort(404);
@@ -111,35 +98,33 @@ class FrontController extends Controller {
 
         $cart = session()->get('cart');
 
-        //$image = Product::with('product_images')->find($id);
-
         if (!$cart) {
             $cart = [
                 $id => [
                     "name" => $product->name,
                     "quantity" => 1,
                     "price" => $product->price,
-                    "seat" => $product->seat,
-                    "product_image" => $product->product_images->first()->toArray(),
+                    //"seat" => $product->seat,   
+                    "image" => $product->image,                 
                 ]
             ];
 
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Product added to cart successfully!');
+            return redirect()->back()->with('success', 'Product added');
         }
 
         if (isset($cart[$id])) {
             $cart[$id]['quantity']++;
             session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Product added to cart successfully!');
+            return redirect()->back()->with('success', 'Product added');
         }
 
         $cart[$id] = [
             "name" => $product->name,
             "quantity" => 1,
             "price" => $product->price,
-            "seat" => $product->seat,
-            "product_image" => $product->product_images->first()->toArray(),
+            //"seat" => $product->seat,
+            "image" => $product->image            
         ];
 
         session()->put('cart', $cart);
@@ -148,9 +133,12 @@ class FrontController extends Controller {
             return response()->json(['message' => 'Product added to cart successfully!']);
         }
 
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
+        return redirect()->route('front.home')->with('success','Product added to cart successfully!');
+
+        //return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
+    //remove Item from cart
     public function removeCartItem(Request $request) {
         if ($request->id) {
             $cart = session()->get('cart');
@@ -163,15 +151,16 @@ class FrontController extends Controller {
         }
     }
 
+    //Clear Cart
     public function clearCart(){
         session()->forget('cart');
         return redirect()->back();
     }
 
 
-
+    //Wishlist
     public function addToWish($id){
-        $product = Product::with('product_images')->find($id);
+        $product = Product::find($id);
         
         if (!$product) {
             abort(404);
@@ -185,7 +174,7 @@ class FrontController extends Controller {
                     "name" => $product->name,
                     "quantity" => 1,
                     "price" => $product->price,
-                    "product_image" => $product->product_images->first()->toArray(),
+                    "image" => $product->image,        
                 ]
             ];
 
@@ -203,7 +192,7 @@ class FrontController extends Controller {
             "name" => $product->name,
             "quantity" => 1,
             "price" => $product->price, 
-            "product_image" => $product->product_images->first()->toArray(),              
+            "image" => $product->image,            
         ];
 
         session()->put('wishlist', $cart);
@@ -222,14 +211,13 @@ class FrontController extends Controller {
                 unset($cart[$request->id]);
                 session()->put('wishlist', $cart);
             }
-
             session()->flash('success', 'Product removed successfully');
         }
     }
 
     public function clearWishlist(){
         session()->forget('wishlist');
-        return redirect()->back();
+        return redirect()->route('front.home')->with('success','Wishlist cleared successfully.');
     }
 
 
@@ -248,7 +236,6 @@ class FrontController extends Controller {
         if ($validator->passes()) {
             $dinein = new Order();
             $dinein->session_id = session('session_id'); 
-            $dinein->seat_id = $request->table_number;
             $dinein->order_type = $request->order_type;
             $dinein->notes = $request->notes;
             $dinein->ready_time = $request->ready_time;
@@ -258,9 +245,11 @@ class FrontController extends Controller {
             foreach ($cart as $data) {     
                 $order = new OrderItem;
                 $order->order_id = $dinein->id;
+                $order->seat_id = $request->table_number;
                 $order->name = $data['name'];
                 $order->price = $data['price'];
                 $order->qty = $data['quantity'];
+                $order->image = $data['image'];
                 $order->total = $data['price']*$data['quantity'];
                 $order->save();
             }

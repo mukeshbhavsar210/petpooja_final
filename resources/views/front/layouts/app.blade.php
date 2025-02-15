@@ -50,14 +50,13 @@
 						</div>
 					</div>
 				@endif
-					@if (getProducts()->isNotEmpty())
-						@foreach (getProducts() as $value )	
+					@if (getCategories()->isNotEmpty())
+						@foreach (getCategories() as $value )	
 							<div class="menu-category">	
 								<div class="menu-category__img">
 									<a href="{{ route('front.menu',[$value->slug])}}" >
-										{{-- @if ($value->image != "") --}}
 										@if ($value->image != "")
-											<img src="{{ asset('uploads/menu/thumb/'.$value->image) }} " alt="">
+											<img src="{{ asset('uploads/category/'.$value->image) }} " alt="">
 										@else
 											<img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
 										@endif

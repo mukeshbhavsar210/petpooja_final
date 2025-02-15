@@ -1,4 +1,3 @@
-    
     <input type="hidden" name="order_type" value="Dinein">
 
     <div class="basket-page__content__notes">
@@ -13,6 +12,7 @@
             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z">
             </path>
         </svg>
+
         <select class="form-select" aria-label="Default select example" name="ready_time">
             <option selected>Ready time</option>
             <option value="1">10:00</option>
@@ -31,8 +31,9 @@
                     @endif
                 @endforeach
             @endif
-        </select>
-      
+        </select>  
+        
+        {{-- {{ $seats }} --}}
     </div>
 
     <button type="submit" class="btn btn-primary">Order</button>
