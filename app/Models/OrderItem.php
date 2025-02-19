@@ -17,8 +17,6 @@ class OrderItem extends Model
         return $this->belongsTo(Seat::class, 'seat_id', );
     }
 
-    
-
     public function seat(){
         return $this->belongsTo(Seat::class);
     }

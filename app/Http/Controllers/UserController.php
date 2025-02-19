@@ -29,7 +29,7 @@ class UserController extends Controller implements HasMiddleware
     public function index(){
         $users = User::latest()->paginate(25);
 
-        return view("users.list", [
+        return view("admin.users.list", [
             'users' => $users
         ]);
     }
@@ -37,7 +37,7 @@ class UserController extends Controller implements HasMiddleware
     public function create(){
         $roles = Role::orderBy('name','ASC')->get();
 
-        return view("users.create", [  
+        return view("admin.users.create", [  
             'roles' => $roles
         ]);
     }
@@ -111,26 +111,11 @@ class UserController extends Controller implements HasMiddleware
            
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Request $request)
-    {
-        $user = User::find($request->id);
+    public function delete(Request $request){
+        $users = User::find($request->id);
+        $users->delete();
 
-        if($user == null){
-            session()->flash('error','User not found');
-            return response()->json([
-                'status' => false
-            ]);
-        }
-
-        $user->delete();
-
-        session()->flash('success','User deleted successfully');
-        return response()->json([
-            'status' => true
-        ]);
+        return redirect()->with('success','User deleted successfully.');
     }
 
 

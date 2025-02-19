@@ -9,6 +9,7 @@ use App\Models\Page;
 use App\Models\Seat;
 use App\Models\Configuration;
 use App\Models\View;
+use App\Models\Theme;
 use Illuminate\Support\Facades\Mail;
 
 function getCategories(){
@@ -20,7 +21,7 @@ function getProducts(){
 } 
 
 function getTheme(){
-    return Configuration::get();
+    return Theme::get();
 } 
 
 function gridTableView(){

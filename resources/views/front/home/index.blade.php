@@ -260,6 +260,23 @@
 
 @section('customJs')
 <script>
+    $('#table_number').change(function(){
+            element = $(this);
+            $("button[type=submit]").prop('disabled', true);
+            $.ajax({
+                url: '{{ route("getSlug") }}',
+                type: 'get',
+                data: {title: element.val()},
+                dataType: 'json',
+                success: function(response){
+                    $("button[type=submit]").prop('disabled', false);
+                    if(response["status"] == true){
+                        $("#slug").val(response["slug"]);
+                    }
+                }
+            });
+        })
+        
     // $("#diningForm").submit(function(event){
     //     event.preventDefault();
     //     var element = $(this);

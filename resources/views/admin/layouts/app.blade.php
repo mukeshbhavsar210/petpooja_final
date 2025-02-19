@@ -171,7 +171,10 @@ if (getTheme()->isNotEmpty()) {
 						<img src="{{ asset('admin-assets/img/avatar5.png') }}" class='img-circle elevation-2' width="40" height="40" alt="">
 					</a>
 					<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-						<div class="p-3">{{ Auth::guard()->user()->email }}</div>
+						<div class="p-3">
+							{{ Auth::guard()->user()->email }}
+							<p>{{ Auth::user()->roles()->pluck('name')->implode(', ') }}</p>
+						</div>
 						<div class="dropdown-divider"></div>
 						<a href="{{ route('profile.edit') }}" class="dropdown-item">
 							<i class="fas fa-lock mr-2"></i>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Seat;
 use App\Models\Seating;
@@ -16,7 +17,8 @@ use Illuminate\Support\Facades\Validator;
 class AreaController extends Controller {
     public function index(Request $request){
         $areas = Area::orderBy('area_name','ASC')->get();
-        $seats = Seat::where('area_id',NULL)->with('order')->get();
+        $seats = Seat::where('area_id',NULL)->with('seat')->get();
+        $tableRunning = OrderItem::with('seat')->get();
 
         $totalTable = DB::table('seats')
                     ->select(DB::raw('count(*) as total_tables'))
@@ -38,7 +40,8 @@ class AreaController extends Controller {
         $data['seats'] = $seats;
         $data['tableIndividual'] = $tableIndividual;
         $data['totalTable'] = $totalTable;
-        $data['totalArea'] = $totalArea;        
+        $data['totalArea'] = $totalArea;
+        $data['tableRunning'] = $tableRunning;         
                
         //dd($data);
 
