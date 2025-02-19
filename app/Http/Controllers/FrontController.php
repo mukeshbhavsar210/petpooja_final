@@ -252,7 +252,7 @@ class FrontController extends Controller {
                 $order->image = $data['image'];
                 $order->total = $data['price']*$data['quantity'];
                 $order->save();
-            }
+            }            
 
             Session::forget('cart');
 

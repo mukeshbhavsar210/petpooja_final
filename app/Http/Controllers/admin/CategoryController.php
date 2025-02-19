@@ -14,6 +14,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class CategoryController extends Controller
 {
+
     public function index(Request $request){
         $categories = Category::latest();
         $menus = DB::table('menus')

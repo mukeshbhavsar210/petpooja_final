@@ -19,6 +19,10 @@ class MenuController extends Controller
         $categories = Category::orderBy('name','ASC')->get();
         $menus = Menu::orderBy('name','ASC')->get();
 
+        $totalMenu = DB::table('categories')
+                    ->select(DB::raw('count(*) as total'))
+                    ->get()[0]->total;
+
         $menuCount = DB::table('menus')
                     ->select(DB::raw('count(*) as total_menu'))
                     ->get()[0]->total_menu;
@@ -39,7 +43,7 @@ class MenuController extends Controller
         
         //dd($menuCount);
 
-        return view('admin.menu.list', $data);      
+        return view('admin.category.list', $data);      
     }
 
     
@@ -147,26 +151,12 @@ class MenuController extends Controller
 
         return response()->json(["success"=> "Menu deleted"]);        
     }
-    
 
-    public function destroy($id, Request $request){
+    public function delete($id){
         $menu = Menu::find($id);
-
-        if(empty($menu)){
-            $request->session()->flash('error','Record not found');
-            return response([
-                'status' => false,
-                'notFound' => true,
-            ]);
-        }
-
         $menu->delete();
 
-        $request->session()->flash('success', 'Menu deleted successfully');
-
-        return response([
-            'status' => true,
-            'message' => 'Sub Category deleted successfully',
-        ]);
+        return redirect()->route('categories.index')->with('success','Menu deleted successfully.');
     }
+    
 }

@@ -29,7 +29,7 @@ class UserController extends Controller implements HasMiddleware
     public function index(){
         $users = User::latest()->paginate(25);
 
-        return view("users.list", [
+        return view("admin.users.list", [
             'users' => $users
         ]);
     }
@@ -37,7 +37,7 @@ class UserController extends Controller implements HasMiddleware
     public function create(){
         $roles = Role::orderBy('name','ASC')->get();
 
-        return view("users.create", [  
+        return view("admin.users.create", [  
             'roles' => $roles
         ]);
     }
@@ -78,7 +78,7 @@ class UserController extends Controller implements HasMiddleware
         
         //dd($roles);
 
-        return view("users.edit", [
+        return view("admin.users.edit", [
             'user' => $user,
             'roles' => $roles,
             'hasRoles' => $hasRoles,
@@ -109,6 +109,14 @@ class UserController extends Controller implements HasMiddleware
 
         return redirect()->route('users.index')->with('success','User updated successfully');
            
+    }
+
+
+    public function delete(Request $request){
+        $users = User::find($request->id);
+        $users->delete();
+
+        return redirect()->with('success','User deleted successfully.');
     }
 
     /**

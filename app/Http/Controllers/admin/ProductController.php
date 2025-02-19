@@ -177,6 +177,14 @@ class ProductController extends Controller {
     }
 
 
+    public function delete($id){
+        $product = Product::find($id);
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success','Menu deleted successfully.');
+    }
+
+
 
     public function destroy($id, Request $request){
         $product = Product::find($id);
@@ -217,12 +225,9 @@ class ProductController extends Controller {
                 }
             }
         }
-
         return response()->json([
             'tags' => $tempProduct,
             'status' => true,
         ]);
-
-
     }
 }

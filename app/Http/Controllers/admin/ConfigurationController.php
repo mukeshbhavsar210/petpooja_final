@@ -7,12 +7,14 @@ use App\Models\Area;
 use App\Models\Configuration;
 use App\Models\Menu;
 use App\Models\Payment;
+use App\Models\Seat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Validator;
 use App\Models\TempImage;
+use App\Models\Theme;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 //use Intervention\Image\ImageManagerStatic as Image;
@@ -35,11 +37,13 @@ class ConfigurationController extends Controller implements HasMiddleware
         $configurations = Configuration::get();
         $payments = Payment::get();        
         $branches = Area::get();
+        $theme = Theme::get();
 
         return view("admin.configurations.list", [
             'configurations' => $configurations,
             'branches' => $branches,
             'payments' => $payments,
+            'theme' => $theme,
         ]);
     }
 
@@ -78,9 +82,6 @@ class ConfigurationController extends Controller implements HasMiddleware
             $data->email = $request->email;
             $data->phone = $request->phone;
             $data->address = $request->address;
-            $data->primary_color = $request->primary_color;
-            $data->secondary_color = $request->secondary_color;
-            $data->sidebar_color = $request->sidebar_color;
 
             //Image upload
             if ($request->hasFile('image')) { 
@@ -101,6 +102,16 @@ class ConfigurationController extends Controller implements HasMiddleware
         } else {
             return redirect()->route('configurations.index')->withInput()->withErrors($validator);
         }
+    }
+
+    public function store_theme(Request $request){
+        $theme = new Theme();
+        $theme->primary_color = $request->primary_color;
+        $theme->secondary_color = $request->secondary_color;
+        $theme->sidebar_color = $request->sidebar_color;
+        $theme->save();
+
+        return redirect()->route('configurations.index')->with('success','Theme added successfully.');
     }
 
     public function store_branch(Request $request){
@@ -145,6 +156,14 @@ class ConfigurationController extends Controller implements HasMiddleware
         } else {
             return redirect()->route('configurations.index')->withInput()->withErrors($validator);
         }
+    }
+
+
+    public function delete($id){
+        $area = Area::find($id);
+        $area->delete();
+
+        return redirect()->route('configurations.index')->with('success','Branch deleted successfully.');
     }
 
    

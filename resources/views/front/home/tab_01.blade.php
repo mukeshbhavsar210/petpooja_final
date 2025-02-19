@@ -31,9 +31,7 @@
                     @endif
                 @endforeach
             @endif
-        </select>  
-        
-        {{-- {{ $seats }} --}}
+        </select> 
     </div>
 
     <button type="submit" class="btn btn-primary">Order</button>

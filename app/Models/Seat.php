@@ -10,7 +10,7 @@ class Seat extends Model
     use HasFactory;   
     
     public function seat(){
-        return $this->belongsTo(Order::class, 'id');
+        return $this->belongsTo(OrderItem::class);
     }
 
     public function area(){
