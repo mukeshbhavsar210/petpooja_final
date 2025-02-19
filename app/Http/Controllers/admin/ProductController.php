@@ -177,29 +177,40 @@ class ProductController extends Controller {
     }
 
 
-
-    public function destroy($id, Request $request){
+    public function delete($id){
         $product = Product::find($id);
 
-        if (empty($product)) {
-            $request->session()->flash('error','Product not found');
-            return response()->json([
-                'status' => false,
-                'notFound' => true,
-            ]);
-        }
-
         File::delete(public_path('uploads/product/'.$product->image));
-
+        
         $product->delete();
 
-        $request->session()->flash('success','Product deleted successfully');
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Product deleted successfully',
-        ]);
+        return redirect()->route('products.index')->with('success','Product deleted successfully.');
     }
+
+
+
+    // public function destroy($id, Request $request){
+    //     $product = Product::find($id);
+
+    //     if (empty($product)) {
+    //         $request->session()->flash('error','Product not found');
+    //         return response()->json([
+    //             'status' => false,
+    //             'notFound' => true,
+    //         ]);
+    //     }
+
+    //     File::delete(public_path('uploads/product/'.$product->image));
+
+    //     $product->delete();
+
+    //     $request->session()->flash('success','Product deleted successfully');
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Product deleted successfully',
+    //     ]);
+    // }
 
     public function getProducts(Request $request){
 
